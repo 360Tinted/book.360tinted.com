@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento Online</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: #6b7280;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .input, .select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .input:focus, .select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .time-slot {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .time-slot:hover {
+            background-color: #f3f4f6;
+            border-color: #3b82f6;
+        }
+
+        .time-slot.selected {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .summary-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .summary-item h4 {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-item p {
+            color: #4b5563;
+        }
+
+        .success-screen {
+            text-align: center;
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .success-icon {
+            width: 4rem;
+            height: 4rem;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .time-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: inline-block;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tela Principal -->
+        <div id="main-screen">
+            <div class="header">
+                <h1>Agendamento Online</h1>
+                <p>Agende sua consulta de forma rápida e fácil</p>
+            </div>
+
+            <div id="error-container"></div>
+
+            <div class="grid">
+                <!-- Card de Serviço e Data/Hora -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">📅</span>
+                            Selecione o Serviço e Horário
+                        </h2>
+                        <p class="card-description">Escolha o tipo de serviço e o horário desejado</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label" for="service">Tipo de Serviço</label>
+                        <select id="service" class="select">
+                            <option value="">Carregando serviços...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label" for="date">Data</label>
+                        <input type="date" id="date" class="input">
+                    </div>
+
+                    <div class="form-group" id="time-section" style="display: none;">
+                        <label class="label">Horário Disponível</label>
+                        <div id="loading-times" class="hidden">
+                            <div class="loading"></div> Carregando horários...
+                        </div>
+                        <div class="time-grid" id="time-grid">
+                            <!-- Horários serão inseridos aqui via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Informações do Cliente -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">👤</span>
+                            Suas Informações
+                        </h2>
+                        <p class="card-description">Preencha seus dados para confirmar o agendamento</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label" for="name">Nome Completo *</label>
+                        <input type="text" id="name" class="input" placeholder="Seu nome completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label" for="email">E-mail *</label>
+                        <input type="email" id="email" class="input" placeholder="seu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label" for="phone">Telefone</label>
+                        <input type="tel" id="phone" class="input" placeholder="(11) 99999-9999">
+                    </div>
+                </div>
+
+                <!-- Card de Resumo -->
+                <div class="card summary-card hidden" id="summary-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Resumo do Agendamento</h2>
+                    </div>
+
+                    <div class="summary-grid" id="summary-content">
+                        <!-- Conteúdo do resumo será inserido aqui -->
+                    </div>
+
+                    <button class="button" id="confirm-btn" disabled>
+                        <span id="confirm-text">Confirmar Agendamento</span>
+                        <div class="loading hidden" id="confirm-loading"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Sucesso -->
+        <div id="success-screen" class="success-screen hidden">
+            <div class="success-icon">✓</div>
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Agendamento Confirmado!</h2>
+            <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                Seu agendamento foi realizado com sucesso. Você receberá um e-mail de confirmação em breve.
+            </p>
+            <div id="appointment-details" style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left;">
+                <!-- Detalhes do agendamento serão inseridos aqui -->
+            </div>
+            <button class="button" onclick="resetForm()">Fazer Novo Agendamento</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuração da API
+        const API_BASE_URL = 'https://three60tinted-agendamento-backend.onrender.com/api';
+
+        // Estado da aplicação
+        let services = [];
+        let selectedTime = '';
+        let formData = {};
+
+        // Elementos do DOM
+        const serviceSelect = document.getElementById('service');
+        const dateInput = document.getElementById('date');
+        const timeSection = document.getElementById('time-section');
+        const timeGrid = document.getElementById('time-grid');
+        const loadingTimes = document.getElementById('loading-times');
+        const summaryCard = document.getElementById('summary-card');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const confirmText = document.getElementById('confirm-text');
+        const confirmLoading = document.getElementById('confirm-loading');
+        const mainScreen = document.getElementById('main-screen');
+        const successScreen = document.getElementById('success-screen');
+        const errorContainer = document.getElementById('error-container');
+
+        // Configurar data mínima
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+
+        // Event listeners
+        serviceSelect.addEventListener('change', updateSummary);
+        dateInput.addEventListener('change', handleDateChange);
+        document.getElementById('name').addEventListener('input', updateSummary);
+        document.getElementById('email').addEventListener('input', updateSummary);
+        document.getElementById('phone').addEventListener('input', updateSummary);
+        confirmBtn.addEventListener('click', confirmAppointment);
+
+        // Funções utilitárias
+        function showError(message) {
+            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        function hideError() {
+            errorContainer.innerHTML = '';
+        }
+
+        // Carregar serviços ao inicializar
+        async function loadServices() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/services`);
+                if (!response.ok) throw new Error('Erro ao carregar serviços');
+                
+                services = await response.json();
+                
+                serviceSelect.innerHTML = '<option value="">Selecione um serviço</option>';
+                services.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.service_key;
+                    option.textContent = `${service.name} - ${service.price}`;
+                    serviceSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar serviços:', error);
+                showError('Erro ao carregar serviços. Tente novamente.');
+            }
+        }
+
+        async function handleDateChange() {
+            if (dateInput.value) {
+                await loadAvailableTimes(dateInput.value);
+                timeSection.style.display = 'block';
+            } else {
+                timeSection.style.display = 'none';
+            }
+            updateSummary();
+        }
+
+        async function loadAvailableTimes(date) {
+            try {
+                loadingTimes.classList.remove('hidden');
+                timeGrid.innerHTML = '';
+                
+                const response = await fetch(`${API_BASE_URL}/available-times?date=${date}`);
+                if (!response.ok) throw new Error('Erro ao carregar horários');
+                
+                const data = await response.json();
+                const availableTimes = data.available_times;
+                
+                loadingTimes.classList.add('hidden');
+                
+                availableTimes.forEach(time => {
+                    const timeSlot = document.createElement('div');
+                    timeSlot.className = 'time-slot';
+                    timeSlot.textContent = time;
+                    timeSlot.addEventListener('click', () => selectTime(time, timeSlot));
+                    timeGrid.appendChild(timeSlot);
+                });
+                
+                if (availableTimes.length === 0) {
+                    timeGrid.innerHTML = '<p style="text-align: center; color: #6b7280;">Nenhum horário disponível para esta data.</p>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar horários:', error);
+                loadingTimes.classList.add('hidden');
+                showError('Erro ao carregar horários disponíveis. Tente novamente.');
+            }
+        }
+
+        function selectTime(time, element) {
+            // Remover seleção anterior
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // Selecionar novo horário
+            element.classList.add('selected');
+            selectedTime = time;
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const service = serviceSelect.value;
+            const date = dateInput.value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            formData = { service, date, time: selectedTime, name, email, phone };
+
+            if (service && date && selectedTime) {
+                summaryCard.classList.remove('hidden');
+                
+                const selectedService = services.find(s => s.service_key === service);
+                const summaryContent = document.getElementById('summary-content');
+                summaryContent.innerHTML = `
+                    <div class="summary-item">
+                        <h4>Serviço</h4>
+                        <p>${selectedService ? selectedService.name : service}</p>
+                        <p style="font-size: 0.875rem; color: #6b7280;">${selectedService ? selectedService.price : ''}</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Data</h4>
+                        <p>${new Date(date).toLocaleDateString('pt-BR')}</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Horário</h4>
+                        <p>${selectedTime}</p>
+                    </div>
+                `;
+                
+                // Habilitar botão se todos os campos obrigatórios estiverem preenchidos
+                confirmBtn.disabled = !(name && email);
+            } else {
+                summaryCard.classList.add('hidden');
+            }
+        }
+
+        async function confirmAppointment() {
+            if (formData.name && formData.email) {
+                try {
+                    // Mostrar loading
+                    confirmBtn.disabled = true;
+                    confirmText.classList.add('hidden');
+                    confirmLoading.classList.remove('hidden');
+                    hideError();
+                    
+                    const appointmentData = {
+                        client_name: formData.name,
+                        client_email: formData.email,
+                        client_phone: formData.phone || null,
+                        service_type: formData.service,
+                        appointment_date: formData.date,
+                        appointment_time: formData.time
+                    };
+                    
+                    const response = await fetch(`${API_BASE_URL}/appointments`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(appointmentData)
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Erro ao criar agendamento');
+                    }
+                    
+                    const result = await response.json();
+                    console.log('Agendamento criado:', result);
+                    
+                    // Mostrar tela de sucesso
+                    showSuccessScreen();
+                    
+                } catch (error) {
+                    console.error('Erro ao confirmar agendamento:', error);
+                    showError(error.message || 'Erro ao confirmar agendamento. Tente novamente.');
+                } finally {
+                    // Esconder loading
+                    confirmBtn.disabled = false;
+                    confirmText.classList.remove('hidden');
+                    confirmLoading.classList.add('hidden');
+                }
+            }
+        }
+
+        function showSuccessScreen() {
+            mainScreen.classList.add('hidden');
+            successScreen.classList.remove('hidden');
+            successScreen.classList.add('fade-in');
+            
+            const selectedService = services.find(s => s.service_key === formData.service);
+            const appointmentDetails = document.getElementById('appointment-details');
+            appointmentDetails.innerHTML = `
+                <p><strong>Data:</strong> ${new Date(formData.date).toLocaleDateString('pt-BR')}</p>
+                <p><strong>Horário:</strong> ${formData.time}</p>
+                <p><strong>Serviço:</strong> ${selectedService ? selectedService.name : formData.service}</p>
+                <p><strong>Cliente:</strong> ${formData.name}</p>
+                <p><strong>E-mail:</strong> ${formData.email}</p>
+                ${formData.phone ? `<p><strong>Telefone:</strong> ${formData.phone}</p>` : ''}
+            `;
+        }
+
+        function resetForm() {
+            // Limpar formulário
+            serviceSelect.value = '';
+            dateInput.value = '';
+            selectedTime = '';
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            
+            // Limpar seleções
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // Esconder seções
+            timeSection.style.display = 'none';
+            summaryCard.classList.add('hidden');
+            
+            // Voltar para tela principal
+            successScreen.classList.add('hidden');
+            mainScreen.classList.remove('hidden');
+            
+            formData = {};
+            hideError();
+        }
+
+        // Inicializar aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            loadServices();
+        });
+    </script>
+</body>
+</html>
+
