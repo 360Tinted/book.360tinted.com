@@ -9,7 +9,7 @@ import './App.css';
 
 // URL da API do seu backend
 // IMPORTANTE: Altere para 'https://api.360tinted.com' DEPOIS que o subdomínio estiver configurado e funcionando no Render!
-const API_BASE_URL = 'https://three60tinted-agendamento-backend.onrender.com/api'; // Mudar para https://api.360tinted.com/api
+const API_BASE_URL = 'https://api.360tinted.com/api'; // Mudar para https://api.360tinted.com/api
 
 function App() {
   const [selectedDate, setSelectedDate] = useState('');
