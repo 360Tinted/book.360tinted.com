@@ -3,42 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Appointment Booking</title>
+    <title>Online Appointment Booking - 360 Tinted</title>
+    <link rel="icon" href="icon.ico" type="image/x-icon">
     <style>
-        /* General styles */
-        * {
-            box-sizing: border-box;
+        /* Estilos globais do seu site principal */
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
+            color: #333; /* Cor do texto do seu site principal */
+            background-color: #f0f0f0; /* Cor de fundo mais clara, como no seu site principal */
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            min-height: 100vh;
-            padding: 1rem;
-            color: #ffffff;
+        h1, h2, h3 {
+            margin: 0;
+            color: #333; /* Garantir que os títulos sigam a cor do seu site principal */
         }
-
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
         .container {
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px 0; /* Ajuste para ter um padding consistente */
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF; /* Cor dos botões do seu site principal */
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #0056b3; /* Hover dos botões do seu site principal */
         }
 
+        /* Estilos específicos para a página de agendamento */
         .header {
             text-align: center;
             margin-bottom: 2rem;
+            padding-top: 40px; /* Espaçamento para o topo */
         }
 
         .header h1 {
             font-size: 2.5rem;
-            color: #ffffff;
+            color: #333; /* Cor do texto do seu site principal */
             margin-bottom: 0.5rem;
         }
 
         .header p {
             font-size: 1.125rem;
-            color: #cccccc;
+            color: #555; /* Cor do texto do seu site principal */
+        }
+
+        /* Logo no header */
+        .logo {
+            max-height: 80px; /* Ajustado para ser visível e não muito grande */
+            margin-bottom: 1rem;
+        }
+
+        /* Botão de "Voltar ao site principal" */
+        .nav-link {
+            display: inline-block;
+            background-color: #007BFF; /* Cor dos botões do seu site principal */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: #0056b3; /* Hover dos botões do seu site principal */
+            transform: translateY(-1px);
         }
 
         /* Grid layout for cards */
@@ -51,17 +94,17 @@
 
         /* Card styles */
         .card {
-            background: #333333;
+            background: #ffffff; /* Fundo branco para os cards, como no seu site principal */
             border-radius: 0.75rem;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
             transition: all 0.2s ease-in-out;
-            border: 1px solid #444444;
+            border: 1px solid #ddd; /* Borda mais suave */
         }
 
         .card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra no hover */
         }
 
         .card-header {
@@ -71,7 +114,7 @@
         .card-title {
             font-size: 1.25rem;
             font-weight: 600;
-            color: #ffffff;
+            color: #333; /* Cor do texto */
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
@@ -79,7 +122,7 @@
         }
 
         .card-description {
-            color: #cccccc;
+            color: #555; /* Cor do texto */
             font-size: 0.875rem;
         }
 
@@ -92,49 +135,36 @@
             display: block;
             font-size: 0.875rem;
             font-weight: 500;
-            color: #ffffff;
+            color: #333; /* Cor do texto */
             margin-bottom: 0.5rem;
         }
 
         .input, .select {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #555555;
+            border: 1px solid #ccc; /* Borda mais clara */
             border-radius: 0.375rem;
             font-size: 1rem;
             transition: all 0.2s;
-            background: #2a2a2a;
-            color: #ffffff;
+            background: #fff; /* Fundo branco para inputs */
+            color: #333; /* Cor do texto */
         }
 
         .input:focus, .select:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #007BFF; /* Cor de foco dos botões */
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra de foco */
         }
 
-        /* Button styles */
+        /* Button styles (usando .btn para consistência) */
         .button {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
+            /* Inherits from .btn */
             width: 100%;
-        }
-
-        .button:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            display: block; /* Para ocupar a largura total */
         }
 
         .button:disabled {
-            background: #9ca3af;
+            background-color: #cccccc; /* Cor para botão desabilitado */
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -150,32 +180,33 @@
 
         .time-slot {
             padding: 0.5rem;
-            border: 1px solid #555555;
+            border: 1px solid #ccc;
             border-radius: 0.375rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 0.875rem;
-            background: #2a2a2a;
-            color: #ffffff;
+            background: #f9f9f9; /* Fundo mais claro */
+            color: #333;
         }
 
         .time-slot:hover {
-            background-color: #444444;
-            border-color: #3b82f6;
+            background-color: #e0e0e0; /* Hover mais suave */
+            border-color: #007BFF;
         }
 
         .time-slot.selected {
-            background-color: #3b82f6;
+            background-color: #007BFF; /* Cor de seleção dos botões */
             color: white;
-            border-color: #3b82f6;
+            border-color: #007BFF;
         }
 
         /* Summary card styles */
         .summary-card {
             grid-column: 1 / -1;
-            background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
-            border: 1px solid #444444;
+            background: #ffffff; /* Fundo branco */
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .summary-grid {
@@ -186,38 +217,40 @@
         }
 
         .summary-item {
-            background: #444444;
+            background: #f0f0f0; /* Fundo mais claro */
             padding: 1rem;
             border-radius: 0.5rem;
-            border-left: 4px solid #3b82f6;
+            border-left: 4px solid #007BFF; /* Cor de destaque dos botões */
+            color: #333;
         }
 
         .summary-item h4 {
             font-weight: 600;
-            color: #ffffff;
+            color: #333;
             margin-bottom: 0.25rem;
         }
 
         .summary-item p {
-            color: #cccccc;
+            color: #555;
         }
 
         /* Success screen styles */
         .success-screen {
             text-align: center;
-            background: #333333;
+            background: #ffffff;
             border-radius: 0.75rem;
             padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 500px;
             margin: 2rem auto;
-            border: 1px solid #444444;
+            border: 1px solid #ddd;
+            color: #333;
         }
 
         .success-icon {
             width: 4rem;
             height: 4rem;
-            background: #10b981;
+            background: #28a745; /* Verde para sucesso */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -229,12 +262,13 @@
 
         /* Error message styles */
         .error-message {
-            background: #fee2e2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
+            background: #f8d7da; /* Fundo vermelho claro */
+            border: 1px solid #f5c6cb;
+            color: #721c24; /* Texto vermelho escuro */
             padding: 1rem;
             border-radius: 0.375rem;
             margin-bottom: 1rem;
+            text-align: left;
         }
 
         /* Loading spinner styles */
@@ -243,7 +277,7 @@
             width: 20px;
             height: 20px;
             border: 3px solid #f3f3f3;
-            border-top: 3px solid #3b82f6;
+            border-top: 3px solid #007BFF; /* Cor de carregamento dos botões */
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -271,6 +305,9 @@
             .time-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+            .container {
+                width: 95%; /* Ajuste para mobile */
+            }
         }
 
         /* Icon styles (for emojis or simple icons) */
@@ -295,36 +332,12 @@
                 transform: translateY(0);
             }
         }
-
-        /* Logo styles */
-        .logo {
-            max-height: 60px;
-            margin-bottom: 1rem;
-        }
-
-        /* Navigation link styles */
-        .nav-link {
-            display: inline-block;
-            background: #374151;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
-        }
-
-        .nav-link:hover {
-            background: #1f2937;
-            transform: translateY(-1px);
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <img src="img/360-tinted-logo.png" alt="360 Tinted Logo" class="logo">
+            <img src="images/Logo3.png" alt="360 Tinted Logo" class="logo">
             <a href="https://www.360tinted.com/" class="nav-link">← Back to Main Website</a>
             <h1>Online Appointment Booking</h1>
             <p>Schedule your appointment quickly and easily</p>
@@ -398,7 +411,7 @@
                     <div class="summary-grid" id="summary-content">
                         </div>
 
-                    <button class="button" id="confirm-btn" disabled>
+                    <button class="button btn" id="confirm-btn" disabled>
                         <span id="confirm-text">Confirm Appointment</span>
                         <div class="loading hidden" id="confirm-loading"></div>
                     </button>
@@ -408,13 +421,13 @@
 
         <div id="success-screen" class="success-screen hidden">
             <div class="success-icon">✓</div>
-            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffffff;">Appointment Confirmed!</h2>
-            <p style="color: #cccccc; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">Appointment Confirmed!</h2>
+            <p style="color: #555; margin-bottom: 1.5rem;">
                 Your appointment has been successfully scheduled. You will receive a confirmation email shortly.
             </p>
-            <div id="appointment-details" style="background: #444444; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left;">
+            <div id="appointment-details" style="background: #f0f0f0; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left; color: #333;">
                 </div>
-            <button class="button" onclick="resetForm()">Schedule New Appointment</button>
+            <button class="button btn" onclick="resetForm()">Schedule New Appointment</button>
         </div>
     </div>
 
@@ -474,11 +487,34 @@
                 services = await response.json();
                 
                 serviceSelect.innerHTML = '<option value="">Select a service</option>';
+                
+                // Mapear os dados recebidos para os nomes e preços desejados
+                const serviceMapping = {
+                    "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
+                    "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
+                    "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
+                    "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
+                    "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
+                    "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
+                    "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
+                    "tint_removal": { name: "Tint Removal", price: "$Variable" },
+                    "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
+                };
+
                 services.forEach(service => {
-                    const option = document.createElement('option');
-                    option.value = service.service_key;
-                    option.textContent = `${service.name} - ${service.price}`;
-                    serviceSelect.appendChild(option);
+                    const mappedService = serviceMapping[service.service_key];
+                    if (mappedService) {
+                        const option = document.createElement('option');
+                        option.value = service.service_key; // Mantém a chave original para enviar ao backend
+                        option.textContent = `${mappedService.name} ${mappedService.price}`;
+                        serviceSelect.appendChild(option);
+                    } else {
+                        // Caso algum serviço do backend não esteja no mapeamento, exibe como veio
+                        const option = document.createElement('option');
+                        option.value = service.service_key;
+                        option.textContent = `${service.name} - ${service.price}`;
+                        serviceSelect.appendChild(option);
+                    }
                 });
             } catch (error) {
                 console.error('Error loading services:', error);
@@ -518,7 +554,7 @@
                 });
                 
                 if (availableTimes.length === 0) {
-                    timeGrid.innerHTML = '<p style="text-align: center; color: #cccccc;">No times available for this date.</p>';
+                    timeGrid.innerHTML = '<p style="text-align: center; color: #555;">No times available for this date.</p>';
                 }
             } catch (error) {
                 console.error('Error loading times:', error);
@@ -551,13 +587,29 @@
             if (service && date && selectedTime) {
                 summaryCard.classList.remove('hidden');
                 
-                const selectedService = services.find(s => s.service_key === service);
+                // Usar o mapeamento para exibir o nome correto no resumo
+                const serviceMapping = {
+                    "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
+                    "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
+                    "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
+                    "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
+                    "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
+                    "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
+                    "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
+                    "tint_removal": { name: "Tint Removal", price: "$Variable" },
+                    "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
+                };
+
+                const selectedServiceInfo = serviceMapping[service];
+                const serviceNameForDisplay = selectedServiceInfo ? selectedServiceInfo.name : service;
+                const servicePriceForDisplay = selectedServiceInfo ? selectedServiceInfo.price : '';
+
                 const summaryContent = document.getElementById('summary-content');
                 summaryContent.innerHTML = `
                     <div class="summary-item">
                         <h4>Service</h4>
-                        <p>${selectedService ? selectedService.name : service}</p>
-                        <p style="font-size: 0.875rem; color: #cccccc;">${selectedService ? selectedService.price : ''}</p>
+                        <p>${serviceNameForDisplay}</p>
+                        <p style="font-size: 0.875rem; color: #555;">${servicePriceForDisplay}</p>
                     </div>
                     <div class="summary-item">
                         <h4>Date</h4>
@@ -589,7 +641,7 @@
                         client_name: formData.name,
                         client_email: formData.email,
                         client_phone: formData.phone || null,
-                        service_type: formData.service,
+                        service_type: formData.service, // Envia o service_key original para o backend
                         appointment_date: formData.date,
                         appointment_time: formData.time
                     };
@@ -630,12 +682,28 @@
             successScreen.classList.remove('hidden');
             successScreen.classList.add('fade-in');
             
-            const selectedService = services.find(s => s.service_key === formData.service);
+            // Usar o mapeamento para exibir o nome correto do serviço nos detalhes da confirmação
+            const serviceMapping = {
+                "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
+                "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
+                "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
+                "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
+                "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
+                "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
+                "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
+                "tint_removal": { name: "Tint Removal", price: "$Variable" },
+                "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
+            };
+
+            const selectedServiceInfo = serviceMapping[formData.service];
+            const serviceNameForDisplay = selectedServiceInfo ? selectedServiceInfo.name : formData.service;
+            const servicePriceForDisplay = selectedServiceInfo ? selectedServiceInfo.price : '';
+
             const appointmentDetails = document.getElementById('appointment-details');
             appointmentDetails.innerHTML = `
                 <p><strong>Date:</strong> ${new Date(formData.date).toLocaleDateString('en-US')}</p>
                 <p><strong>Time:</strong> ${formData.time}</p>
-                <p><strong>Service:</strong> ${selectedService ? selectedService.name : formData.service}</p>
+                <p><strong>Service:</strong> ${serviceNameForDisplay} ${servicePriceForDisplay}</p>
                 <p><strong>Client:</strong> ${formData.name}</p>
                 <p><strong>E-mail:</strong> ${formData.email}</p>
                 ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
