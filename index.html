@@ -1,729 +1,822 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Appointment Booking - 360 Tinted</title>
-    <link rel="icon" href="icon.ico" type="image/x-icon">
-    <style>
-        /* Estilos globais do seu site principal */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            color: #333; /* Cor do texto do seu site principal */
-            background-color: #f0f0f0; /* Cor de fundo mais clara, como no seu site principal */
-        }
-        h1, h2, h3 {
-            margin: 0;
-            color: #333; /* Garantir que os títulos sigam a cor do seu site principal */
-        }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 0; /* Ajuste para ter um padding consistente */
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF; /* Cor dos botões do seu site principal */
-            color: #fff;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            text-align: center;
-        }
-        .btn:hover {
-            background-color: #0056b3; /* Hover dos botões do seu site principal */
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Appointment Booking - 360 Tinted</title>
+    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <style>
+        /* Estilos globais do seu site principal */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333; /* Cor do texto do seu site principal */
+            background-color: #f0f0f0; /* Cor de fundo mais clara, como no seu site principal */
+        }
+        h1, h2, h3 {
+            margin: 0;
+            color: #333; /* Garantir que os títulos sigam a cor do seu site principal */
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0; /* Ajuste para ter um padding consistente */
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF; /* Cor dos botões do seu site principal */
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #0056b3; /* Hover dos botões do seu site principal */
+        }
 
-        /* Estilos específicos para a página de agendamento */
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-top: 40px; /* Espaçamento para o topo */
-        }
+        /* Estilos específicos para a página de agendamento */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-top: 40px; /* Espaçamento para o topo */
+        }
 
-        .header h1 {
-            font-size: 2.5rem;
-            color: #333; /* Cor do texto do seu site principal */
-            margin-bottom: 0.5rem;
-        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #333; /* Cor do texto do seu site principal */
+            margin-bottom: 0.5rem;
+        }
 
-        .header p {
-            font-size: 1.125rem;
-            color: #555; /* Cor do texto do seu site principal */
-        }
+        .header p {
+            font-size: 1.125rem;
+            color: #555; /* Cor do texto do seu site principal */
+        }
 
-        /* Logo no header */
-        .logo {
-            max-height: 80px; /* Ajustado para ser visível e não muito grande */
-            margin-bottom: 1rem;
-        }
+        /* Logo no header */
+        .logo {
+            max-height: 80px; /* Ajustado para ser visível e não muito grande */
+            margin-bottom: 1rem;
+        }
 
-        /* Botão de "Voltar ao site principal" */
-        .nav-link {
-            display: inline-block;
-            background-color: #007BFF; /* Cor dos botões do seu site principal */
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
-        }
+        /* Botão de "Voltar ao site principal" */
+        .nav-link {
+            display: inline-block;
+            background-color: #007BFF; /* Cor dos botões do seu site principal */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
 
-        .nav-link:hover {
-            background-color: #0056b3; /* Hover dos botões do seu site principal */
-            transform: translateY(-1px);
-        }
+        .nav-link:hover {
+            background-color: #0056b3; /* Hover dos botões do seu site principal */
+            transform: translateY(-1px);
+        }
 
-        /* Grid layout for cards */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
+        /* Grid layout for cards */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
 
-        /* Card styles */
-        .card {
-            background: #ffffff; /* Fundo branco para os cards, como no seu site principal */
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
-            transition: all 0.2s ease-in-out;
-            border: 1px solid #ddd; /* Borda mais suave */
-        }
+        /* Card styles */
+        .card {
+            background: #ffffff; /* Fundo branco para os cards, como no seu site principal */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #ddd; /* Borda mais suave */
+        }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra no hover */
-        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra no hover */
+        }
 
-        .card-header {
-            margin-bottom: 1.5rem;
-        }
+        .card-header {
+            margin-bottom: 1.5rem;
+        }
 
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #333; /* Cor do texto */
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333; /* Cor do texto */
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-        .card-description {
-            color: #555; /* Cor do texto */
-            font-size: 0.875rem;
-        }
+        .card-description {
+            color: #555; /* Cor do texto */
+            font-size: 0.875rem;
+        }
 
-        /* Form elements */
-        .form-group {
-            margin-bottom: 1rem;
-        }
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1rem;
+        }
 
-        .label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #333; /* Cor do texto */
-            margin-bottom: 0.5rem;
-        }
+        .label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #333; /* Cor do texto */
+            margin-bottom: 0.5rem;
+        }
 
-        .input, .select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc; /* Borda mais clara */
-            border-radius: 0.375rem;
-            font-size: 1rem;
-            transition: all 0.2s;
-            background: #fff; /* Fundo branco para inputs */
-            color: #333; /* Cor do texto */
-        }
+        .input, .select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc; /* Borda mais clara */
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: #fff; /* Fundo branco para inputs */
+            color: #333; /* Cor do texto */
+        }
 
-        .input:focus, .select:focus {
-            outline: none;
-            border-color: #007BFF; /* Cor de foco dos botões */
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra de foco */
-        }
+        .input:focus, .select:focus {
+            outline: none;
+            border-color: #007BFF; /* Cor de foco dos botões */
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra de foco */
+        }
 
-        /* Button styles (usando .btn para consistência) */
-        .button {
-            /* Inherits from .btn */
-            width: 100%;
-            display: block; /* Para ocupar a largura total */
-        }
+        /* Button styles (usando .btn para consistência) */
+        .button {
+            /* Inherits from .btn */
+            width: 100%;
+            display: block; /* Para ocupar a largura total */
+        }
 
-        .button:disabled {
-            background-color: #cccccc; /* Cor para botão desabilitado */
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
+        .button:disabled {
+            background-color: #cccccc; /* Cor para botão desabilitado */
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-        /* Time slot styles */
-        .time-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
+        /* Time slot styles */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
 
-        .time-slot {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 0.375rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.875rem;
-            background: #f9f9f9; /* Fundo mais claro */
-            color: #333;
-        }
+        .time-slot {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 0.375rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            background: #f9f9f9; /* Fundo mais claro */
+            color: #333;
+        }
 
-        .time-slot:hover {
-            background-color: #e0e0e0; /* Hover mais suave */
-            border-color: #007BFF;
-        }
+        .time-slot:hover {
+            background-color: #e0e0e0; /* Hover mais suave */
+            border-color: #007BFF;
+        }
 
-        .time-slot.selected {
-            background-color: #007BFF; /* Cor de seleção dos botões */
-            color: white;
-            border-color: #007BFF;
-        }
+        .time-slot.selected {
+            background-color: #007BFF; /* Cor de seleção dos botões */
+            color: white;
+            border-color: #007BFF;
+        }
 
-        /* Summary card styles */
-        .summary-card {
-            grid-column: 1 / -1;
-            background: #ffffff; /* Fundo branco */
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+        /* Summary card styles */
+        .summary-card {
+            grid-column: 1 / -1;
+            background: #ffffff; /* Fundo branco */
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
 
-        .summary-item {
-            background: #f0f0f0; /* Fundo mais claro */
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border-left: 4px solid #007BFF; /* Cor de destaque dos botões */
-            color: #333;
-        }
+        .summary-item {
+            background: #f0f0f0; /* Fundo mais claro */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #007BFF; /* Cor de destaque dos botões */
+            color: #333;
+        }
 
-        .summary-item h4 {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.25rem;
-        }
+        .summary-item h4 {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
 
-        .summary-item p {
-            color: #555;
-        }
+        .summary-item p {
+            color: #555;
+        }
 
-        /* Success screen styles */
-        .success-screen {
-            text-align: center;
-            background: #ffffff;
-            border-radius: 0.75rem;
-            padding: 2rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            margin: 2rem auto;
-            border: 1px solid #ddd;
-            color: #333;
-        }
+        /* Success screen styles */
+        .success-screen {
+            text-align: center;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 2rem auto;
+            border: 1px solid #ddd;
+            color: #333;
+        }
 
-        .success-icon {
-            width: 4rem;
-            height: 4rem;
-            background: #28a745; /* Verde para sucesso */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            color: white;
-            font-size: 2rem;
-        }
+        .success-icon {
+            width: 4rem;
+            height: 4rem;
+            background: #28a745; /* Verde para sucesso */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+        }
 
-        /* Error message styles */
-        .error-message {
-            background: #f8d7da; /* Fundo vermelho claro */
-            border: 1px solid #f5c6cb;
-            color: #721c24; /* Texto vermelho escuro */
-            padding: 1rem;
-            border-radius: 0.375rem;
-            margin-bottom: 1rem;
-            text-align: left;
-        }
+        /* Error message styles */
+        .error-message {
+            background: #f8d7da; /* Fundo vermelho claro */
+            border: 1px solid #f5c6cb;
+            color: #721c24; /* Texto vermelho escuro */
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
 
-        /* Loading spinner styles */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #007BFF; /* Cor de carregamento dos botões */
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        /* Loading spinner styles */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007BFF; /* Cor de carregamento dos botões */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-        /* Utility classes */
-        .hidden {
-            display: none;
-        }
+        /* Utility classes */
+        .hidden {
+            display: none;
+        }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .time-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .container {
-                width: 95%; /* Ajuste para mobile */
-            }
-        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .time-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .container {
+                width: 95%; /* Ajuste para mobile */
+            }
+        }
 
-        /* Icon styles (for emojis or simple icons) */
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            display: inline-block;
-        }
+        /* Icon styles (for emojis ou simple icons) */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: inline-block;
+        }
 
-        /* Fade-in animation */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
+        /* Fade-in animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="img/logo.png" alt="360 Tinted Logo" class="logo">
-            <a href="https://www.360tinted.com/" class="nav-link">← Back to Main Website</a>
-            <h1>Online Appointment Booking</h1>
-            <p>Schedule your appointment quickly and easily</p>
-        </div>
+    <div class="container">
+        <div class="header">
+            <img src="img/logo.png" alt="360 Tinted Logo" class="logo">
+            <a href="https://www.360tinted.com/" class="nav-link">← Back to Main Website</a>
+            <h1>Online Appointment Booking</h1>
+            <p>Schedule your appointment quickly and easily</p>
+        </div>
 
-        <div id="main-screen">
-            <div id="error-container"></div>
+        <div id="main-screen">
+            <div id="error-container"></div>
 
-            <div class="grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">
-                            <span class="icon">📅</span>
-                            Select Service and Time
-                        </h2>
-                        <p class="card-description">Choose the type of service and desired time</p>
-                    </div>
+            <div class="grid">
+                <div class="card" id="service-time-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">📅</span>
+                            Select Service and Time
+                        </h2>
+                        <p class="card-description">Choose the type of service and desired time</p>
+                    </div>
 
-                    <div class="form-group">
-                        <label class="label" for="service">Service Type</label>
-                        <select id="service" class="select">
-                            <option value="">Loading services...</option>
-                        </select>
-                    </div>
+                    <div class="form-group">
+                        <label class="label" for="service">Service Type</label>
+                        <select id="service" class="select">
+                            <option value="">Loading services...</option>
+                        </select>
+                    </div>
 
-                    <div class="form-group">
-                        <label class="label" for="date">Date</label>
-                        <input type="date" id="date" class="input">
-                    </div>
+                    <div class="form-group">
+                        <label class="label" for="date">Date</label>
+                        <input type="date" id="date" class="input">
+                    </div>
 
-                    <div class="form-group" id="time-section" style="display: none;">
-                        <label class="label">Available Time Slots</label>
-                        <div id="loading-times" class="hidden">
-                            <div class="loading"></div> Loading times...
-                        </div>
-                        <div class="time-grid" id="time-grid">
-                            </div>
-                    </div>
-                </div>
+                    <div class="form-group" id="time-section" style="display: none;">
+                        <label class="label">Available Time Slots</label>
+                        <div id="loading-times" class="hidden">
+                            <div class="loading"></div> Loading times...
+                        </div>
+                        <div class="time-grid" id="time-grid">
+                            </div>
+                    </div>
+                </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">
-                            <span class="icon">👤</span>
-                            Your Information
-                        </h2>
-                        <p class="card-description">Please fill in your details to confirm the appointment</p>
-                    </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">👤</span>
+                            Your Information
+                        </h2>
+                        <p class="card-description">Please fill in your details to confirm the appointment</p>
+                    </div>
 
-                    <div class="form-group">
-                        <label class="label" for="name">Full Name *</label>
-                        <input type="text" id="name" class="input" placeholder="Your full name">
-                    </div>
+                    <div class="form-group">
+                        <label class="label" for="name">Full Name *</label>
+                        <input type="text" id="name" class="input" placeholder="Your full name">
+                    </div>
 
-                    <div class="form-group">
-                        <label class="label" for="email">E-mail *</label>
-                        <input type="email" id="email" class="input" placeholder="your@email.com">
-                    </div>
+                    <div class="form-group">
+                        <label class="label" for="email">E-mail *</label>
+                        <input type="email" id="email" class="input" placeholder="your@email.com">
+                    </div>
 
-                    <div class="form-group">
-                        <label class="label" for="phone">Phone</label>
-                        <input type="tel" id="phone" class="input" placeholder="(XXX) XXX-XXXX">
-                    </div>
-                </div>
+                    <div class="form-group">
+                        <label class="label" for="phone">Phone</label>
+                        <input type="tel" id="phone" class="input" placeholder="(XXX) XXX-XXXX">
+                    </div>
+                </div>
 
-                <div class="card summary-card hidden" id="summary-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Appointment Summary</h2>
-                    </div>
+                <div class="card summary-card hidden" id="summary-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Appointment Summary</h2>
+                    </div>
 
-                    <div class="summary-grid" id="summary-content">
-                        </div>
+                    <div class="summary-grid" id="summary-content">
+                        </div>
 
-                    <button class="button btn" id="confirm-btn" disabled>
-                        <span id="confirm-text">Confirm Appointment</span>
-                        <div class="loading hidden" id="confirm-loading"></div>
-                    </button>
-                </div>
-            </div>
-        </div>
+                    <button class="button btn" id="confirm-btn" disabled>
+                        <span id="confirm-text">Confirm Appointment</span>
+                        <div class="loading hidden" id="confirm-loading"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-        <div id="success-screen" class="success-screen hidden">
-            <div class="success-icon">✓</div>
-            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">Appointment Confirmed!</h2>
-            <p style="color: #555; margin-bottom: 1.5rem;">
-                Your appointment has been successfully scheduled. You will receive a confirmation email shortly.
-            </p>
-            <div id="appointment-details" style="background: #f0f0f0; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left; color: #333;">
-                </div>
-            <button class="button btn" onclick="resetForm()">Schedule New Appointment</button>
-        </div>
-    </div>
+        <div id="success-screen" class="success-screen hidden">
+            <div class="success-icon">✓</div>
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">Appointment Confirmed!</h2>
+            <p style="color: #555; margin-bottom: 1.5rem;">
+                Your appointment has been successfully scheduled. You will receive a confirmation email shortly.
+            </p>
+            <div id="appointment-details" style="background: #f0f0f0; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left; color: #333;">
+                </div>
+            <button class="button btn" onclick="resetForm()">Schedule New Appointment</button>
+        </div>
+    </div>
 
-    <script>
-        // API Configuration
-        const API_BASE_URL = 'https://three60tinted-agendamento-backend.onrender.com/api';
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'https://three60tinted-agendamento-backend.onrender.com/api';
 
-        // Application State
-        let services = [];
-        let selectedTime = '';
-        let formData = {};
+        // Application State
+        let services = [];
+        let selectedTime = null; // Changed to null for clearer initial state
+        let formData = {};
 
-        // DOM Elements
-        const serviceSelect = document.getElementById('service');
-        const dateInput = document.getElementById('date');
-        const timeSection = document.getElementById('time-section');
-        const timeGrid = document.getElementById('time-grid');
-        const loadingTimes = document.getElementById('loading-times');
-        const summaryCard = document.getElementById('summary-card');
-        const confirmBtn = document.getElementById('confirm-btn');
-        const confirmText = document.getElementById('confirm-text');
-        const confirmLoading = document.getElementById('confirm-loading');
-        const mainScreen = document.getElementById('main-screen');
-        const successScreen = document.getElementById('success-screen');
-        const errorContainer = document.getElementById('error-container');
+        // DOM Elements
+        const serviceSelect = document.getElementById('service');
+        const dateInput = document.getElementById('date');
+        const timeSection = document.getElementById('time-section');
+        const timeGrid = document.getElementById('time-grid');
+        const loadingTimes = document.getElementById('loading-times');
+        const summaryCard = document.getElementById('summary-card');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const confirmText = document.getElementById('confirm-text');
+        const confirmLoading = document.getElementById('confirm-loading');
+        const mainScreen = document.getElementById('main-screen');
+        const successScreen = document.getElementById('success-screen');
+        const errorContainer = document.getElementById('error-container');
 
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.min = today;
+        // NEW: References to client information inputs
+        const fullNameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
 
-        // Event Listeners
-        // MODIFICADO: Adicionado listener para serviceSelect para chamar handleSelectionChange
-        serviceSelect.addEventListener('change', handleSelectionChange);
-        // MODIFICADO: Adicionado listener para dateInput para chamar handleSelectionChange
-        dateInput.addEventListener('change', handleSelectionChange);
-        
-        document.getElementById('name').addEventListener('input', updateSummary);
-        document.getElementById('email').addEventListener('input', updateSummary);
-        document.getElementById('phone').addEventListener('input', updateSummary);
+        // NEW: Reference to the Service and Time card
+        const serviceTimeCard = document.getElementById('service-time-card');
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+
+        // Event Listeners
+        serviceSelect.addEventListener('change', handleSelectionChange);
+        dateInput.addEventListener('change', handleSelectionChange);
+        
+        // MODIFICADO: Adicionado listener para os campos de informação do cliente para ativar/desativar
+        fullNameInput.addEventListener('input', handleClientInfoChange);
+        emailInput.addEventListener('input', handleClientInfoChange);
+        phoneInput.addEventListener('input', handleClientInfoChange); // Optional, if phone also triggers
+        
         confirmBtn.addEventListener('click', confirmAppointment);
 
-        // Utility Functions
-        function showError(message) {
-            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
-            setTimeout(() => {
-                errorContainer.innerHTML = '';
-            }, 5000);
-        }
+        // Utility Functions
+        function showError(message) {
+            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 5000);
+        }
 
-        function hideError() {
-            errorContainer.innerHTML = '';
-        }
+        function hideError() {
+            errorContainer.innerHTML = '';
+        }
 
-        // NOVO: Função para lidar com mudanças no serviço OU na data
-        async function handleSelectionChange() {
-            const selectedServiceKey = serviceSelect.value;
-            const selectedDate = dateInput.value;
-
-            // Se ambos, serviço e data, estiverem selecionados, carregue os horários
-            if (selectedServiceKey && selectedDate) {
-                await loadAvailableTimes(selectedDate, selectedServiceKey);
-                timeSection.style.display = 'block';
+        // NEW: Function to toggle visibility of Service and Time card
+        function toggleServiceTimeCard(enable) {
+            if (enable) {
+                serviceTimeCard.classList.remove('hidden');
+                loadServices(); // Load services only when this section is enabled
             } else {
-                // Se um dos dois não estiver selecionado, oculta a seção de horários
+                serviceTimeCard.classList.add('hidden');
+            }
+        }
+
+        // NEW: Handle changes in client information
+        function handleClientInfoChange() {
+            const name = fullNameInput.value;
+            const email = emailInput.value;
+
+            // Basic validation for name and email to enable the next step
+            if (name.trim() !== '' && email.trim() !== '') {
+                toggleServiceTimeCard(true); // Enable service/time selection
+            } else {
+                toggleServiceTimeCard(false); // Disable service/time selection
+                // Also clear service/date/time selections if client info is cleared
+                serviceSelect.value = '';
+                dateInput.value = '';
+                selectedTime = null;
                 timeSection.style.display = 'none';
-                timeGrid.innerHTML = ''; // Limpa os horários
-                selectedTime = ''; // Reseta o horário selecionado
-            }
-            updateSummary();
-        }
-
-        // Load services on initialization
-        async function loadServices() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/services`);
-                if (!response.ok) throw new Error('Error loading services');
-                
-                services = await response.json();
-                
-                serviceSelect.innerHTML = '<option value="">Select a service</option>';
-                
-                // Mapear os dados recebidos para os nomes e preços desejados
-                // REMOVIDO: Este mapeamento fixo é redundante se o backend já envia o name e price corretos.
-                // Usaremos diretamente os dados do 'services' array
-                
-                services.forEach(service => {
-                    const option = document.createElement('option');
-                    option.value = service.service_key; // Mantém a chave original para enviar ao backend
-                    option.textContent = `${service.name} ${service.price}`; // Usar name e price do backend
-                    serviceSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error loading services:', error);
-                showError('Error loading services. Please try again.');
-            }
-        }
-
-        // MODIFICADO: loadAvailableTimes agora aceita service_key
-        async function loadAvailableTimes(date, serviceKey) {
-            try {
-                loadingTimes.classList.remove('hidden');
                 timeGrid.innerHTML = '';
-                selectedTime = ''; // Resetar o tempo selecionado ao recarregar
-                
-                const response = await fetch(`${API_BASE_URL}/available-times?date=${date}&service_id=${serviceKey}`); // <--- ATUALIZADO AQUI
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error loading times');
-                }
-                
-                const data = await response.json();
-                const availableTimes = data.available_times;
-                
-                loadingTimes.classList.add('hidden');
-                
-                if (availableTimes.length === 0) {
-                    timeGrid.innerHTML = '<p style="text-align: center; color: #555;">No times available for this date and service.</p>';
-                } else {
-                    availableTimes.forEach(time => {
-                        const timeSlot = document.createElement('div');
-                        timeSlot.className = 'time-slot';
-                        timeSlot.textContent = time;
-                        timeSlot.addEventListener('click', () => selectTime(time, timeSlot));
-                        timeGrid.appendChild(timeSlot);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading times:', error);
-                loadingTimes.classList.add('hidden');
-                showError(error.message || 'Error loading available times. Please try again.');
             }
-        }
-
-        function selectTime(time, element) {
-            // Remove previous selection
-            document.querySelectorAll('.time-slot').forEach(slot => {
-                slot.classList.remove('selected');
-            });
-            
-            // Select new time
-            element.classList.add('selected');
-            selectedTime = time;
             updateSummary();
         }
 
-        function updateSummary() {
-            const serviceKey = serviceSelect.value; // service_key
-            const date = dateInput.value;
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
+        // NOVO: Função para lidar com mudanças no serviço OU na data
+        async function handleSelectionChange() {
+            hideError(); // Clear any previous errors
+            const selectedServiceKey = serviceSelect.value;
+            const selectedDate = dateInput.value;
 
-            // Encontrar o objeto de serviço completo pelo serviceKey
-            const selectedService = services.find(s => s.service_key === serviceKey);
-            const serviceNameForDisplay = selectedService ? selectedService.name : 'N/A';
-            const servicePriceForDisplay = selectedService ? selectedService.price : '';
-
-            formData = { 
-                service: serviceKey, // Mantém service_key para enviar ao backend
-                service_name_display: serviceNameForDisplay, // Adiciona nome para exibição no resumo
-                service_price_display: servicePriceForDisplay, // Adiciona preço para exibição no resumo
-                date, 
-                time: selectedTime, 
-                name, 
-                email, 
-                phone 
-            };
-
-            if (serviceKey && date && selectedTime) { // Verifique serviceKey, não o objeto
-                summaryCard.classList.remove('hidden');
-                
-                const summaryContent = document.getElementById('summary-content');
-                summaryContent.innerHTML = `
-                    <div class="summary-item">
-                        <h4>Service</h4>
-                        <p>${formData.service_name_display}</p>
-                        <p style="font-size: 0.875rem; color: #555;">${formData.service_price_display}</p>
-                    </div>
-                    <div class="summary-item">
-                        <h4>Date</h4>
-                        <p>${new Date(date).toLocaleDateString('en-US')}</p>
-                    </div>
-                    <div class="summary-item">
-                        <h4>Time</h4>
-                        <p>${selectedTime}</p>
-                    </div>
-                `;
-                
-                // Enable button if all required fields are filled
-                confirmBtn.disabled = !(name && email);
-            } else {
-                summaryCard.classList.add('hidden');
-                confirmBtn.disabled = true; // Desabilita o botão se a seleção estiver incompleta
-            }
-        }
-
-        async function confirmAppointment() {
-            if (formData.name && formData.email && formData.service && formData.date && formData.time) { // Mais verificações
-                try {
-                    // Show loading
-                    confirmBtn.disabled = true;
-                    confirmText.classList.add('hidden');
-                    confirmLoading.classList.remove('hidden');
-                    hideError();
-                    
-                    const appointmentData = {
-                        client_name: formData.name,
-                        client_email: formData.email,
-                        client_phone: formData.phone || null,
-                        service_type: formData.service, // Envia o service_key (ID) original para o backend
-                        appointment_date: formData.date,
-                        appointment_time: formData.time
-                    };
-                    
-                    const response = await fetch(`${API_BASE_URL}/appointments`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(appointmentData)
-                    });
-                    
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error creating appointment');
-                    }
-                    
-                    const result = await response.json();
-                    console.log('Appointment created:', result);
-                    
-                    // Show success screen
-                    showSuccessScreen();
-                    
-                } catch (error) {
-                    console.error('Error confirming appointment:', error);
-                    showError(error.message || 'Error confirming appointment. Please try again.');
-                } finally {
-                    // Hide loading
-                    confirmBtn.disabled = false;
-                    confirmText.classList.remove('hidden');
-                    confirmLoading.classList.add('hidden');
-                }
-            } else {
-                showError('Please fill in all required fields (Service, Date, Time, Name, Email).');
-            }
-        }
-
-        function showSuccessScreen() {
-            mainScreen.classList.add('hidden');
-            successScreen.classList.remove('hidden');
-            successScreen.classList.add('fade-in');
-            
-            // Reutiliza os dados de exibição do formData
-            const appointmentDetails = document.getElementById('appointment-details');
-            appointmentDetails.innerHTML = `
-                <p><strong>Date:</strong> ${new Date(formData.date).toLocaleDateString('en-US')}</p>
-                <p><strong>Time:</strong> ${formData.time}</p>
-                <p><strong>Service:</strong> ${formData.service_name_display} ${formData.service_price_display}</p>
-                <p><strong>Client:</strong> ${formData.name}</p>
-                <p><strong>E-mail:</strong> ${formData.email}</p>
-                ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
-            `;
-        }
-
-        function resetForm() {
-            // Clear form
-            serviceSelect.value = '';
-            dateInput.value = '';
-            selectedTime = '';
-            document.getElementById('name').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('phone').value = '';
-            
-            // Clear selections
-            document.querySelectorAll('.time-slot').forEach(slot => {
-                slot.classList.remove('selected');
-            });
-            timeGrid.innerHTML = ''; // Limpar os horários exibidos
-            
-            // Hide sections
+            // Clear time slots and hide section initially
+            timeGrid.innerHTML = '';
             timeSection.style.display = 'none';
-            summaryCard.classList.add('hidden');
-            
-            // Return to main screen
-            successScreen.classList.add('hidden');
-            mainScreen.classList.remove('hidden');
-            
-            formData = {};
-            hideError();
-            confirmBtn.disabled = true; // Garante que o botão de confirmar esteja desabilitado
-        }
+            selectedTime = null; // Reset selected time
 
-        // Initialize application
-        document.addEventListener('DOMContentLoaded', function() {
-            loadServices();
-        });
-    </script>
+            // Se ambos, serviço e data, estiverem selecionados, carregue os horários
+            if (selectedServiceKey && selectedDate) {
+                await loadAvailableTimes(selectedDate, selectedServiceKey);
+                timeSection.style.display = 'block';
+            } else {
+                // Se um dos dois não estiver selecionado, oculta a seção de horários
+                timeSection.style.display = 'none';
+                timeGrid.innerHTML = ''; // Limpa os horários
+                selectedTime = null; // Reseta o horário selecionado
+            }
+            updateSummary();
+        }
+
+        // Load services on initialization
+        async function loadServices() {
+            serviceSelect.innerHTML = '<option value="">Loading services...</option>'; // Show loading message
+            serviceSelect.disabled = true; // Disable until loaded
+            try {
+                const response = await fetch(`${API_BASE_URL}/services`);
+                if (!response.ok) throw new Error('Error loading services');
+                
+                services = await response.json();
+                
+                serviceSelect.innerHTML = '<option value="">Select a service</option>';
+                
+                services.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.service_key; // Use service_key for value
+                    option.textContent = `${service.name} ${service.price ? `- ${service.price}` : ''}`; // Display price if available
+                    // Store additional data for summary
+                    option.dataset.serviceName = service.name;
+                    option.dataset.serviceDuration = service.duration; // Assuming duration is always number
+                    option.dataset.servicePrice = service.price; // Store as is (can be text or number)
+                    serviceSelect.appendChild(option);
+                });
+                serviceSelect.disabled = false; // Enable after loading
+            } catch (error) {
+                console.error('Error loading services:', error);
+                showError('Error loading services. Please try again.');
+                serviceSelect.innerHTML = '<option value="">Failed to load services</option>'; // Update message on error
+            }
+        }
+
+        // MODIFICADO: loadAvailableTimes agora aceita service_key e date
+        async function loadAvailableTimes(date, serviceKey) {
+            try {
+                loadingTimes.classList.remove('hidden');
+                timeGrid.innerHTML = '';
+                selectedTime = null; // Resetar o tempo selecionado ao recarregar
+                
+                const response = await fetch(`${API_BASE_URL}/available-times?date=${date}&service_id=${serviceKey}`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error loading times');
+                }
+                
+                const data = await response.json();
+                const availableTimes = data.available_times;
+                
+                loadingTimes.classList.add('hidden');
+                
+                if (availableTimes.length === 0) {
+                    timeGrid.innerHTML = '<p style="text-align: center; color: #555;">No times available for this date and service.</p>';
+                } else {
+                    availableTimes.forEach(time => {
+                        // Assuming your backend returns available_times as a list of objects with start_time and end_time
+                        // If it only returns start_time, you need to calculate end_time based on service duration.
+                        // For now, let's assume `time` directly has a `start_time` and `end_time` property if it's an object.
+                        // If `time` is just a string "HH:MM", then `endTime` won't be available here unless calculated.
+                        // For safety, let's assume `time` is a string like "HH:MM" and we'll calculate `endTime` later if needed for backend.
+                        // Or, if backend sends objects { start_time: "HH:MM", end_time: "HH:MM" }, then use those.
+                        // Based on the previous context, `available_times` was just a list of strings, so we'll stick to that.
+                        // We'll calculate `end_time` for the `formData` based on `serviceDuration`.
+
+                        const timeSlot = document.createElement('div');
+                        timeSlot.className = 'time-slot';
+                        timeSlot.textContent = time; // Assuming 'time' is just the start time string
+                        timeSlot.addEventListener('click', () => selectTime(time, timeSlot));
+                        timeGrid.appendChild(timeSlot);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading times:', error);
+                loadingTimes.classList.add('hidden');
+                showError(error.message || 'Error loading available times. Please try again.');
+            }
+        }
+
+        function selectTime(time, element) {
+            // Remove previous selection
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // Select new time
+            element.classList.add('selected');
+            selectedTime = time;
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const serviceKey = serviceSelect.value;
+            const date = dateInput.value;
+            const name = fullNameInput.value; // Use fullNameInput
+            const email = emailInput.value;   // Use emailInput
+            const phone = phoneInput.value;   // Use phoneInput
+
+            // Encontrar o objeto de serviço completo pelo serviceKey
+            const selectedService = services.find(s => s.service_key === serviceKey);
+            
+            let serviceNameForDisplay = 'N/A';
+            let servicePriceForDisplay = '';
+            let serviceDurationInMinutes = 0;
+            let calculatedEndTime = 'N/A';
+
+            if (selectedService) {
+                serviceNameForDisplay = selectedService.name;
+                servicePriceForDisplay = selectedService.price; // Keep as is ("Consultar" or number)
+                serviceDurationInMinutes = parseInt(selectedService.duration); // Assume duration is always numeric
+
+                if (selectedTime && !isNaN(serviceDurationInMinutes)) {
+                    // Calculate end time
+                    const [hours, minutes] = selectedTime.split(':').map(Number);
+                    const startTimeDate = new Date();
+                    startTimeDate.setHours(hours, minutes, 0, 0); // Set to selected time
+
+                    const endTimeDate = new Date(startTimeDate.getTime() + serviceDurationInMinutes * 60 * 1000);
+                    calculatedEndTime = endTimeDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                }
+            }
+
+
+            formData = { 
+                service_key: serviceKey, // Keep service_key for backend
+                service_name_display: serviceNameForDisplay, // For summary display
+                service_price_display: servicePriceForDisplay, // For summary display
+                service_duration: serviceDurationInMinutes, // For internal calculations
+                date: date, 
+                start_time: selectedTime, 
+                end_time: calculatedEndTime, // Calculated end time
+                fullName: name, 
+                email: email, 
+                phone: phone 
+            };
+
+            // Check if all required fields are filled to show summary and enable confirm button
+            if (name && email && serviceKey && date && selectedTime) {
+                summaryCard.classList.remove('hidden');
+                
+                const summaryContent = document.getElementById('summary-content');
+                summaryContent.innerHTML = `
+                    <div class="summary-item">
+                        <h4>Service</h4>
+                        <p>${formData.service_name_display}</p>
+                        <p style="font-size: 0.875rem; color: #555;">${formData.service_price_display ? `Price: ${formData.service_price_display}` : 'Price: Not available'}</p>
+                        <p style="font-size: 0.875rem; color: #555;">Duration: ${formData.service_duration || 'N/A'} mins</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Date</h4>
+                        <p>${new Date(date).toLocaleDateString('en-US')}</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Time</h4>
+                        <p>Start: ${formData.start_time}</p>
+                        <p>End: ${formData.end_time}</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Client Info</h4>
+                        <p>Name: ${formData.fullName}</p>
+                        <p>Email: ${formData.email}</p>
+                        ${formData.phone ? `<p>Phone: ${formData.phone}</p>` : ''}
+                    </div>
+                `;
+                
+                // Enable button if all required fields are filled
+                confirmBtn.disabled = false;
+            } else {
+                summaryCard.classList.add('hidden');
+                confirmBtn.disabled = true; // Desabilita o botão se a seleção estiver incompleta
+            }
+        }
+
+        async function confirmAppointment() {
+            if (formData.fullName && formData.email && formData.service_key && formData.date && formData.start_time && formData.end_time) {
+                try {
+                    // Show loading
+                    confirmBtn.disabled = true;
+                    confirmText.classList.add('hidden');
+                    confirmLoading.classList.remove('hidden');
+                    hideError();
+                    
+                    const appointmentData = {
+                        client_name: formData.fullName,
+                        client_email: formData.email,
+                        client_phone: formData.phone || null,
+                        service_id: formData.service_key, // Send service_key to backend
+                        appointment_date: formData.date,
+                        start_time: formData.start_time,
+                        end_time: formData.end_time // Send calculated end time
+                    };
+                    
+                    const response = await fetch(`${API_BASE_URL}/appointments`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(appointmentData)
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error creating appointment');
+                    }
+                    
+                    const result = await response.json();
+                    console.log('Appointment created:', result);
+                    
+                    // Show success screen
+                    showSuccessScreen();
+                    
+                } catch (error) {
+                    console.error('Error confirming appointment:', error);
+                    showError(error.message || 'Error confirming appointment. Please try again.');
+                } finally {
+                    // Hide loading
+                    confirmBtn.disabled = false;
+                    confirmText.classList.remove('hidden');
+                    confirmLoading.classList.add('hidden');
+                }
+            } else {
+                showError('Please fill in all required fields (Name, Email, Service, Date, Time).');
+            }
+        }
+
+        function showSuccessScreen() {
+            mainScreen.classList.add('hidden');
+            successScreen.classList.remove('hidden');
+            successScreen.classList.add('fade-in');
+            
+            // Reutiliza os dados de exibição do formData
+            const appointmentDetails = document.getElementById('appointment-details');
+            appointmentDetails.innerHTML = `
+                <p><strong>Service:</strong> ${formData.service_name_display} ${formData.service_price_display ? `- ${formData.service_price_display}` : ''}</p>
+                <p><strong>Duration:</strong> ${formData.service_duration} minutes</p>
+                <p><strong>Date:</strong> ${new Date(formData.date).toLocaleDateString('en-US')}</p>
+                <p><strong>Time:</strong> ${formData.start_time} - ${formData.end_time}</p>
+                <p><strong>Client:</strong> ${formData.fullName}</p>
+                <p><strong>E-mail:</strong> ${formData.email}</p>
+                ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
+            `;
+        }
+
+        function resetForm() {
+            // Clear form
+            serviceSelect.value = '';
+            dateInput.value = '';
+            selectedTime = null;
+            fullNameInput.value = ''; // Use fullNameInput
+            emailInput.value = '';   // Use emailInput
+            phoneInput.value = '';   // Use phoneInput
+            
+            // Clear selections
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            timeGrid.innerHTML = ''; // Limpar os horários exibidos
+            
+            // Hide sections
+            timeSection.style.display = 'none';
+            summaryCard.classList.add('hidden');
+            toggleServiceTimeCard(false); // Hide service/time card and disable it
+            
+            // Return to main screen
+            successScreen.classList.add('hidden');
+            mainScreen.classList.remove('hidden');
+            
+            formData = {};
+            hideError();
+            confirmBtn.disabled = true; // Garante que o botão de confirmar esteja desabilitado
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initially hide the service and time selection card
+            toggleServiceTimeCard(false);
+            updateSummary(); // Initialize summary and button state
+        });
+    </script>
 </body>
 </html>
