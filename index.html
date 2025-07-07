@@ -459,8 +459,11 @@
         dateInput.min = today;
 
         // Event Listeners
-        serviceSelect.addEventListener('change', updateSummary);
-        dateInput.addEventListener('change', handleDateChange);
+        // MODIFICADO: Adicionado listener para serviceSelect para chamar handleSelectionChange
+        serviceSelect.addEventListener('change', handleSelectionChange);
+        // MODIFICADO: Adicionado listener para dateInput para chamar handleSelectionChange
+        dateInput.addEventListener('change', handleSelectionChange);
+        
         document.getElementById('name').addEventListener('input', updateSummary);
         document.getElementById('email').addEventListener('input', updateSummary);
         document.getElementById('phone').addEventListener('input', updateSummary);
@@ -478,6 +481,24 @@
             errorContainer.innerHTML = '';
         }
 
+        // NOVO: Função para lidar com mudanças no serviço OU na data
+        async function handleSelectionChange() {
+            const selectedServiceKey = serviceSelect.value;
+            const selectedDate = dateInput.value;
+
+            // Se ambos, serviço e data, estiverem selecionados, carregue os horários
+            if (selectedServiceKey && selectedDate) {
+                await loadAvailableTimes(selectedDate, selectedServiceKey);
+                timeSection.style.display = 'block';
+            } else {
+                // Se um dos dois não estiver selecionado, oculta a seção de horários
+                timeSection.style.display = 'none';
+                timeGrid.innerHTML = ''; // Limpa os horários
+                selectedTime = ''; // Reseta o horário selecionado
+            }
+            updateSummary();
+        }
+
         // Load services on initialization
         async function loadServices() {
             try {
@@ -489,32 +510,14 @@
                 serviceSelect.innerHTML = '<option value="">Select a service</option>';
                 
                 // Mapear os dados recebidos para os nomes e preços desejados
-                const serviceMapping = {
-                    "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
-                    "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
-                    "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
-                    "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
-                    "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
-                    "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
-                    "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
-                    "tint_removal": { name: "Tint Removal", price: "$Variable" },
-                    "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
-                };
-
+                // REMOVIDO: Este mapeamento fixo é redundante se o backend já envia o name e price corretos.
+                // Usaremos diretamente os dados do 'services' array
+                
                 services.forEach(service => {
-                    const mappedService = serviceMapping[service.service_key];
-                    if (mappedService) {
-                        const option = document.createElement('option');
-                        option.value = service.service_key; // Mantém a chave original para enviar ao backend
-                        option.textContent = `${mappedService.name} ${mappedService.price}`;
-                        serviceSelect.appendChild(option);
-                    } else {
-                        // Caso algum serviço do backend não esteja no mapeamento, exibe como veio
-                        const option = document.createElement('option');
-                        option.value = service.service_key;
-                        option.textContent = `${service.name} - ${service.price}`;
-                        serviceSelect.appendChild(option);
-                    }
+                    const option = document.createElement('option');
+                    option.value = service.service_key; // Mantém a chave original para enviar ao backend
+                    option.textContent = `${service.name} ${service.price}`; // Usar name e price do backend
+                    serviceSelect.appendChild(option);
                 });
             } catch (error) {
                 console.error('Error loading services:', error);
@@ -522,44 +525,39 @@
             }
         }
 
-        async function handleDateChange() {
-            if (dateInput.value) {
-                await loadAvailableTimes(dateInput.value);
-                timeSection.style.display = 'block';
-            } else {
-                timeSection.style.display = 'none';
-            }
-            updateSummary();
-        }
-
-        async function loadAvailableTimes(date) {
+        // MODIFICADO: loadAvailableTimes agora aceita service_key
+        async function loadAvailableTimes(date, serviceKey) {
             try {
                 loadingTimes.classList.remove('hidden');
                 timeGrid.innerHTML = '';
+                selectedTime = ''; // Resetar o tempo selecionado ao recarregar
                 
-                const response = await fetch(`${API_BASE_URL}/available-times?date=${date}`);
-                if (!response.ok) throw new Error('Error loading times');
+                const response = await fetch(`${API_BASE_URL}/available-times?date=${date}&service_id=${serviceKey}`); // <--- ATUALIZADO AQUI
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error loading times');
+                }
                 
                 const data = await response.json();
                 const availableTimes = data.available_times;
                 
                 loadingTimes.classList.add('hidden');
                 
-                availableTimes.forEach(time => {
-                    const timeSlot = document.createElement('div');
-                    timeSlot.className = 'time-slot';
-                    timeSlot.textContent = time;
-                    timeSlot.addEventListener('click', () => selectTime(time, timeSlot));
-                    timeGrid.appendChild(timeSlot);
-                });
-                
                 if (availableTimes.length === 0) {
-                    timeGrid.innerHTML = '<p style="text-align: center; color: #555;">No times available for this date.</p>';
+                    timeGrid.innerHTML = '<p style="text-align: center; color: #555;">No times available for this date and service.</p>';
+                } else {
+                    availableTimes.forEach(time => {
+                        const timeSlot = document.createElement('div');
+                        timeSlot.className = 'time-slot';
+                        timeSlot.textContent = time;
+                        timeSlot.addEventListener('click', () => selectTime(time, timeSlot));
+                        timeGrid.appendChild(timeSlot);
+                    });
                 }
             } catch (error) {
                 console.error('Error loading times:', error);
                 loadingTimes.classList.add('hidden');
-                showError('Error loading available times. Please try again.');
+                showError(error.message || 'Error loading available times. Please try again.');
             }
         }
 
@@ -576,40 +574,37 @@
         }
 
         function updateSummary() {
-            const service = serviceSelect.value;
+            const serviceKey = serviceSelect.value; // service_key
             const date = dateInput.value;
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
 
-            formData = { service, date, time: selectedTime, name, email, phone };
+            // Encontrar o objeto de serviço completo pelo serviceKey
+            const selectedService = services.find(s => s.service_key === serviceKey);
+            const serviceNameForDisplay = selectedService ? selectedService.name : 'N/A';
+            const servicePriceForDisplay = selectedService ? selectedService.price : '';
 
-            if (service && date && selectedTime) {
+            formData = { 
+                service: serviceKey, // Mantém service_key para enviar ao backend
+                service_name_display: serviceNameForDisplay, // Adiciona nome para exibição no resumo
+                service_price_display: servicePriceForDisplay, // Adiciona preço para exibição no resumo
+                date, 
+                time: selectedTime, 
+                name, 
+                email, 
+                phone 
+            };
+
+            if (serviceKey && date && selectedTime) { // Verifique serviceKey, não o objeto
                 summaryCard.classList.remove('hidden');
                 
-                // Usar o mapeamento para exibir o nome correto no resumo
-                const serviceMapping = {
-                    "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
-                    "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
-                    "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
-                    "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
-                    "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
-                    "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
-                    "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
-                    "tint_removal": { name: "Tint Removal", price: "$Variable" },
-                    "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
-                };
-
-                const selectedServiceInfo = serviceMapping[service];
-                const serviceNameForDisplay = selectedServiceInfo ? selectedServiceInfo.name : service;
-                const servicePriceForDisplay = selectedServiceInfo ? selectedServiceInfo.price : '';
-
                 const summaryContent = document.getElementById('summary-content');
                 summaryContent.innerHTML = `
                     <div class="summary-item">
                         <h4>Service</h4>
-                        <p>${serviceNameForDisplay}</p>
-                        <p style="font-size: 0.875rem; color: #555;">${servicePriceForDisplay}</p>
+                        <p>${formData.service_name_display}</p>
+                        <p style="font-size: 0.875rem; color: #555;">${formData.service_price_display}</p>
                     </div>
                     <div class="summary-item">
                         <h4>Date</h4>
@@ -625,11 +620,12 @@
                 confirmBtn.disabled = !(name && email);
             } else {
                 summaryCard.classList.add('hidden');
+                confirmBtn.disabled = true; // Desabilita o botão se a seleção estiver incompleta
             }
         }
 
         async function confirmAppointment() {
-            if (formData.name && formData.email) {
+            if (formData.name && formData.email && formData.service && formData.date && formData.time) { // Mais verificações
                 try {
                     // Show loading
                     confirmBtn.disabled = true;
@@ -641,7 +637,7 @@
                         client_name: formData.name,
                         client_email: formData.email,
                         client_phone: formData.phone || null,
-                        service_type: formData.service, // Envia o service_key original para o backend
+                        service_type: formData.service, // Envia o service_key (ID) original para o backend
                         appointment_date: formData.date,
                         appointment_time: formData.time
                     };
@@ -674,6 +670,8 @@
                     confirmText.classList.remove('hidden');
                     confirmLoading.classList.add('hidden');
                 }
+            } else {
+                showError('Please fill in all required fields (Service, Date, Time, Name, Email).');
             }
         }
 
@@ -682,28 +680,12 @@
             successScreen.classList.remove('hidden');
             successScreen.classList.add('fade-in');
             
-            // Usar o mapeamento para exibir o nome correto do serviço nos detalhes da confirmação
-            const serviceMapping = {
-                "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
-                "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
-                "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
-                "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
-                "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
-                "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
-                "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
-                "tint_removal": { name: "Tint Removal", price: "$Variable" },
-                "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
-            };
-
-            const selectedServiceInfo = serviceMapping[formData.service];
-            const serviceNameForDisplay = selectedServiceInfo ? selectedServiceInfo.name : formData.service;
-            const servicePriceForDisplay = selectedServiceInfo ? selectedServiceInfo.price : '';
-
+            // Reutiliza os dados de exibição do formData
             const appointmentDetails = document.getElementById('appointment-details');
             appointmentDetails.innerHTML = `
                 <p><strong>Date:</strong> ${new Date(formData.date).toLocaleDateString('en-US')}</p>
                 <p><strong>Time:</strong> ${formData.time}</p>
-                <p><strong>Service:</strong> ${serviceNameForDisplay} ${servicePriceForDisplay}</p>
+                <p><strong>Service:</strong> ${formData.service_name_display} ${formData.service_price_display}</p>
                 <p><strong>Client:</strong> ${formData.name}</p>
                 <p><strong>E-mail:</strong> ${formData.email}</p>
                 ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
@@ -723,6 +705,7 @@
             document.querySelectorAll('.time-slot').forEach(slot => {
                 slot.classList.remove('selected');
             });
+            timeGrid.innerHTML = ''; // Limpar os horários exibidos
             
             // Hide sections
             timeSection.style.display = 'none';
@@ -734,6 +717,7 @@
             
             formData = {};
             hideError();
+            confirmBtn.disabled = true; // Garante que o botão de confirmar esteja desabilitado
         }
 
         // Initialize application
