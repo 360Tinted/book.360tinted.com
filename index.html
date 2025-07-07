@@ -515,7 +515,7 @@
                 
                 services.forEach(service => {
                     const option = document.createElement('option');
-                    option.value = service.service_key; // Mantém a chave original para enviar ao backend
+                    option.value = service.service_id; // <-- Altere para service.id
                     option.textContent = `${service.name} ${service.price}`; // Usar name e price do backend
                     serviceSelect.appendChild(option);
                 });
