@@ -482,13 +482,27 @@
         }
 
         // NOVO: Função para lidar com mudanças no serviço OU na data
-        async function handleSelectionChange() {
-            const selectedServiceKey = serviceSelect.value;
-            const selectedDate = dateInput.value;
+async function handleSelectionChange() {
+    const serviceId = serviceSelect.value; // Pega o ID do serviço selecionado
+    const selectedDate = dateInput.value;   // Pega a data selecionada
 
-            // Se ambos, serviço e data, estiverem selecionados, carregue os horários
-            if (selectedServiceKey && selectedDate) {
-                await loadAvailableTimes(selectedDate, selectedServiceKey);
+    // Limpa os slots e esconde a seção se não houver um serviço ou data válida
+    availableTimeSlotsDiv.innerHTML = '';
+    availableTimeSlotsSection.classList.add('hidden');
+    hideError(); // Esconde qualquer erro anterior
+
+    if (!serviceId) {
+        showError('Por favor, selecione um tipo de serviço primeiro.');
+        return; // Sai da função se não houver serviço selecionado
+    }
+
+    if (!selectedDate) {
+        showError('Por favor, selecione uma data.');
+        return; // Sai da função se não houver data selecionada
+    }
+
+    // Se ambos estão definidos, carregue os horários
+    await loadAvailableTimes(serviceId, selectedDate);
                 timeSection.style.display = 'block';
             } else {
                 // Se um dos dois não estiver selecionado, oculta a seção de horários
