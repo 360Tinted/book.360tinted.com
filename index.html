@@ -1,285 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Appointment Booking - 360 Tinted</title>
-    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <title>Agendamento 360 Tinted</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos globais do seu site principal */
+        /* Estilos Globais */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            line-height: 1.6;
-            color: #333; /* Cor do texto do seu site principal */
-            background-color: #f0f0f0; /* Cor de fundo mais clara, como no seu site principal */
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
-        h1, h2, h3 {
-            margin: 0;
-            color: #333; /* Garantir que os títulos sigam a cor do seu site principal */
-        }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+
         .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 0; /* Ajuste para ter um padding consistente */
+            background-color: #fff;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 95%;
+            box-sizing: border-box;
         }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF; /* Cor dos botões do seu site principal */
-            color: #fff;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+
+        h1 {
             text-align: center;
-        }
-        .btn:hover {
-            background-color: #0056b3; /* Hover dos botões do seu site principal */
-        }
-
-        /* Estilos específicos para a página de agendamento */
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-top: 40px; /* Espaçamento para o topo */
+            color: #2c3e50;
+            margin-bottom: 30px;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            color: #333; /* Cor do texto do seu site principal */
-            margin-bottom: 0.5rem;
+        /* Seções do Formulário */
+        .form-section {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
         }
 
-        .header p {
-            font-size: 1.125rem;
-            color: #555; /* Cor do texto do seu site principal */
-        }
-
-        /* Logo no header */
-        .logo {
-            max-height: 80px; /* Ajustado para ser visível e não muito grande */
-            margin-bottom: 1rem;
-        }
-
-        /* Botão de "Voltar ao site principal" */
-        .nav-link {
-            display: inline-block;
-            background-color: #007BFF; /* Cor dos botões do seu site principal */
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
-        }
-
-        .nav-link:hover {
-            background-color: #0056b3; /* Hover dos botões do seu site principal */
-            transform: translateY(-1px);
-        }
-
-        /* Grid layout for cards */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Card styles */
-        .card {
-            background: #ffffff; /* Fundo branco para os cards, como no seu site principal */
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
-            transition: all 0.2s ease-in-out;
-            border: 1px solid #ddd; /* Borda mais suave */
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra no hover */
-        }
-
-        .card-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #333; /* Cor do texto */
-            margin-bottom: 0.5rem;
+        .form-section h2 {
+            color: #34495e;
+            margin-top: 0;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
         }
 
-        .card-description {
-            color: #555; /* Cor do texto */
-            font-size: 0.875rem;
+        .form-section h2 svg {
+            margin-right: 10px;
+            color: #3498db;
         }
 
-        /* Form elements */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 15px;
         }
 
-        .label {
+        label {
             display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #333; /* Cor do texto */
-            margin-bottom: 0.5rem;
-        }
-
-        .input, .select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc; /* Borda mais clara */
-            border-radius: 0.375rem;
-            font-size: 1rem;
-            transition: all 0.2s;
-            background: #fff; /* Fundo branco para inputs */
-            color: #333; /* Cor do texto */
-        }
-
-        .input:focus, .select:focus {
-            outline: none;
-            border-color: #007BFF; /* Cor de foco dos botões */
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra de foco */
-        }
-
-        /* Button styles (usando .btn para consistência) */
-        .button {
-            /* Inherits from .btn */
-            width: 100%;
-            display: block; /* Para ocupar a largura total */
-        }
-
-        .button:disabled {
-            background-color: #cccccc; /* Cor para botão desabilitado */
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Time slot styles */
-        .time-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .time-slot {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 0.375rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.875rem;
-            background: #f9f9f9; /* Fundo mais claro */
-            color: #333;
-        }
-
-        .time-slot:hover {
-            background-color: #e0e0e0; /* Hover mais suave */
-            border-color: #007BFF;
-        }
-
-        .time-slot.selected {
-            background-color: #007BFF; /* Cor de seleção dos botões */
-            color: white;
-            border-color: #007BFF;
-        }
-
-        /* Summary card styles */
-        .summary-card {
-            grid-column: 1 / -1;
-            background: #ffffff; /* Fundo branco */
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .summary-item {
-            background: #f0f0f0; /* Fundo mais claro */
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border-left: 4px solid #007BFF; /* Cor de destaque dos botões */
-            color: #333;
-        }
-
-        .summary-item h4 {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.25rem;
-        }
-
-        .summary-item p {
+            margin-bottom: 8px;
+            font-weight: bold;
             color: #555;
         }
 
-        /* Success screen styles */
-        .success-screen {
-            text-align: center;
-            background: #ffffff;
-            border-radius: 0.75rem;
-            padding: 2rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            margin: 2rem auto;
-            border: 1px solid #ddd;
+        select, input[type="date"], input[type="text"], input[type="email"], input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input[type="date"]:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        /* Estilos para Horários Disponíveis */
+        .time-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 5px; /* Ajustado para caber em telas menores */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.3s, transform 0.2s;
+            white-space: nowrap; /* Evita quebra de linha no texto do botão */
+            overflow: hidden; /* Garante que o texto não "transborde" */
+            text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo */
+        }
+
+        .time-slot-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .time-slot-button.selected {
+            background-color: #27ae60;
+            border: 2px solid #2ecc71;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        }
+
+        /* Resumo do Agendamento */
+        .appointment-summary {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #c8e6c9;
+            margin-top: 20px;
+        }
+
+        .appointment-summary h3 {
+            color: #2e7d32;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .appointment-summary p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .appointment-summary strong {
             color: #333;
         }
 
-        .success-icon {
-            width: 4rem;
-            height: 4rem;
-            background: #28a745; /* Verde para sucesso */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
+        /* Botão de Confirmação */
+        .confirm-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
             color: white;
-            font-size: 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, opacity 0.3s;
+            margin-top: 20px;
         }
 
-        /* Error message styles */
+        .confirm-button:hover:not(:disabled) {
+            background-color: #218838;
+        }
+
+        .confirm-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Mensagens de Erro/Sucesso */
+        .error-message, .success-message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
         .error-message {
-            background: #f8d7da; /* Fundo vermelho claro */
+            background-color: #f8d7da;
+            color: #721c24;
             border: 1px solid #f5c6cb;
-            color: #721c24; /* Texto vermelho escuro */
-            padding: 1rem;
-            border-radius: 0.375rem;
-            margin-bottom: 1rem;
-            text-align: left;
         }
 
-        /* Loading spinner styles */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #007BFF; /* Cor de carregamento dos botões */
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Spinner de Carregamento */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db;
             border-radius: 50%;
+            width: 30px;
+            height: 30px;
             animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Escondido por padrão */
         }
 
         @keyframes spin {
@@ -287,457 +207,428 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Utility classes */
-        .hidden {
-            display: none;
-        }
-
-        /* Responsive adjustments */
+        /* Responsividade */
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .time-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
             .container {
-                width: 95%; /* Ajuste para mobile */
+                padding: 20px;
+                margin: 10px auto;
+            }
+
+            .time-slots-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Ajusta para telas menores */
+            }
+
+            .time-slot-button {
+                font-size: 14px;
+                padding: 8px 3px;
             }
         }
 
-        /* Icon styles (for emojis or simple icons) */
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            display: inline-block;
-        }
-
-        /* Fade-in animation */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .form-section h2 {
+                font-size: 20px;
+            }
+
+            .time-slots-grid {
+                grid-template-columns: 1fr 1fr; /* Duas colunas em telas muito pequenas */
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <img src="img/logo.png" alt="360 Tinted Logo" class="logo">
-            <a href="https://www.360tinted.com/" class="nav-link">← Back to Main Website</a>
-            <h1>Online Appointment Booking</h1>
-            <p>Schedule your appointment quickly and easily</p>
-        </div>
+        <h1>Schedule your appointment quickly and easily</h1>
 
-        <div id="main-screen">
-            <div id="error-container"></div>
+        <div id="errorMessage" class="error-message hidden"></div>
+        <div id="successMessage" class="success-message hidden"></div>
 
-            <div class="grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">
-                            <span class="icon">📅</span>
-                            Select Service and Time
-                        </h2>
-                        <p class="card-description">Choose the type of service and desired time</p>
+        <div class="form-section">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/></svg>
+                Select Service and Time
+            </h2>
+            <div class="form-group">
+                <label for="serviceSelect">Service Type:</label>
+                <select id="serviceSelect">
+                    <option value="">Select a service</option>
+                    </select>
+            </div>
+            <div class="form-group">
+                <label for="dateInput">Date:</label>
+                <input type="date" id="dateInput">
+            </div>
+
+            <div id="loadingSpinner" class="spinner hidden"></div>
+
+            <div id="availableTimeSlotsSection" class="form-group hidden">
+                <label>Available Time Slots:</label>
+                <div id="availableTimeSlots" class="time-slots-grid">
                     </div>
-
-                    <div class="form-group">
-                        <label class="label" for="service">Service Type</label>
-                        <select id="service" class="select">
-                            <option value="">Loading services...</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="label" for="date">Date</label>
-                        <input type="date" id="date" class="input">
-                    </div>
-
-                    <div class="form-group" id="time-section" style="display: none;">
-                        <label class="label">Available Time Slots</label>
-                        <div id="loading-times" class="hidden">
-                            <div class="loading"></div> Loading times...
-                        </div>
-                        <div class="time-grid" id="time-grid">
-                            </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">
-                            <span class="icon">👤</span>
-                            Your Information
-                        </h2>
-                        <p class="card-description">Please fill in your details to confirm the appointment</p>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="label" for="name">Full Name *</label>
-                        <input type="text" id="name" class="input" placeholder="Your full name">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="label" for="email">E-mail *</label>
-                        <input type="email" id="email" class="input" placeholder="your@email.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="label" for="phone">Phone</label>
-                        <input type="tel" id="phone" class="input" placeholder="(XXX) XXX-XXXX">
-                    </div>
-                </div>
-
-                <div class="card summary-card hidden" id="summary-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Appointment Summary</h2>
-                    </div>
-
-                    <div class="summary-grid" id="summary-content">
-                        </div>
-
-                    <button class="button btn" id="confirm-btn" disabled>
-                        <span id="confirm-text">Confirm Appointment</span>
-                        <div class="loading hidden" id="confirm-loading"></div>
-                    </button>
-                </div>
             </div>
         </div>
 
-        <div id="success-screen" class="success-screen hidden">
-            <div class="success-icon">✓</div>
-            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">Appointment Confirmed!</h2>
-            <p style="color: #555; margin-bottom: 1.5rem;">
-                Your appointment has been successfully scheduled. You will receive a confirmation email shortly.
-            </p>
-            <div id="appointment-details" style="background: #f0f0f0; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left; color: #333;">
-                </div>
-            <button class="button btn" onclick="resetForm()">Schedule New Appointment</button>
+        <div class="form-section">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Your Information
+            </h2>
+            <div class="form-group">
+                <label for="fullNameInput">Full Name:</label>
+                <input type="text" id="fullNameInput" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="emailInput">E-mail:</label>
+                <input type="email" id="emailInput" placeholder="Enter your e-mail">
+            </div>
+            <div class="form-group">
+                <label for="phoneInput">Phone:</label>
+                <input type="tel" id="phoneInput" placeholder="Enter your phone number">
+            </div>
         </div>
+
+        <div class="appointment-summary hidden" id="appointmentSummary">
+            <h3>Appointment Summary</h3>
+            <p><strong>Service:</strong> <span id="summaryService">N/A</span></p>
+            <p><strong>Date:</strong> <span id="summaryDate">N/A</span></p>
+            <p><strong>Time:</strong> <span id="summaryTime">N/A</span></p>
+            <p><strong>Price:</strong> <span id="summaryPrice">N/A</span></p>
+            <p><strong>Your Name:</strong> <span id="summaryName">N/A</span></p>
+            <p><strong>Your E-mail:</strong> <span id="summaryEmail">N/A</span></p>
+            <p><strong>Your Phone:</strong> <span id="summaryPhone">N/A</span></p>
+        </div>
+
+        <button id="confirmButton" class="confirm-button" disabled>Confirm Appointment</button>
     </div>
 
     <script>
-        // API Configuration
-        const API_BASE_URL = 'https://three60tinted-agendamento-backend.onrender.com/api';
+        // Elementos do DOM
+        const serviceSelect = document.getElementById('serviceSelect');
+        const dateInput = document.getElementById('dateInput');
+        const availableTimeSlotsSection = document.getElementById('availableTimeSlotsSection');
+        const availableTimeSlotsDiv = document.getElementById('availableTimeSlots');
+        const fullNameInput = document.getElementById('fullNameInput');
+        const emailInput = document.getElementById('emailInput');
+        const phoneInput = document.getElementById('phoneInput');
+        const confirmButton = document.getElementById('confirmButton');
+        const appointmentSummary = document.getElementById('appointmentSummary');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const successMessageDiv = document.getElementById('successMessage');
+        const loadingSpinner = document.getElementById('loadingSpinner');
 
-        // Application State
-        let services = [];
-        let selectedTime = '';
-        let formData = {};
+        // Estado do formulário
+        const formData = {
+            service: null,
+            serviceName: null,
+            serviceDuration: null,
+            servicePrice: null,
+            date: null,
+            time: null,
+            endTime: null, // Adicionado para armazenar o tempo de término do slot
+            fullName: null,
+            email: null,
+            phone: null
+        };
 
-        // DOM Elements
-        const serviceSelect = document.getElementById('service');
-        const dateInput = document.getElementById('date');
-        const timeSection = document.getElementById('time-section');
-        const timeGrid = document.getElementById('time-grid');
-        const loadingTimes = document.getElementById('loading-times');
-        const summaryCard = document.getElementById('summary-card');
-        const confirmBtn = document.getElementById('confirm-btn');
-        const confirmText = document.getElementById('confirm-text');
-        const confirmLoading = document.getElementById('confirm-loading');
-        const mainScreen = document.getElementById('main-screen');
-        const successScreen = document.getElementById('success-screen');
-        const errorContainer = document.getElementById('error-container');
+        // --- Funções de Utilitário ---
 
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.min = today;
+        function showLoadingSpinner() {
+            loadingSpinner.classList.remove('hidden');
+        }
 
-        // Event Listeners
-        // MODIFICADO: Adicionado listener para serviceSelect para chamar handleSelectionChange
-        serviceSelect.addEventListener('change', handleSelectionChange);
-        // MODIFICADO: Adicionado listener para dateInput para chamar handleSelectionChange
-        dateInput.addEventListener('change', handleSelectionChange);
-        
-        document.getElementById('name').addEventListener('input', updateSummary);
-        document.getElementById('email').addEventListener('input', updateSummary);
-        document.getElementById('phone').addEventListener('input', updateSummary);
-        confirmBtn.addEventListener('click', confirmAppointment);
+        function hideLoadingSpinner() {
+            loadingSpinner.classList.add('hidden');
+        }
 
-        // Utility Functions
         function showError(message) {
-            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
-            setTimeout(() => {
-                errorContainer.innerHTML = '';
-            }, 5000);
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.classList.remove('hidden');
+            successMessageDiv.classList.add('hidden'); // Esconde mensagem de sucesso
         }
 
         function hideError() {
-            errorContainer.innerHTML = '';
+            errorMessageDiv.classList.add('hidden');
         }
 
-        // NOVO: Função para lidar com mudanças no serviço OU na data
-async function handleSelectionChange() {
-    const serviceId = serviceSelect.value; // Pega o ID do serviço selecionado
-    const selectedDate = dateInput.value;   // Pega a data selecionada
+        function showSuccess(message) {
+            successMessageDiv.textContent = message;
+            successMessageDiv.classList.remove('hidden');
+            errorMessageDiv.classList.add('hidden'); // Esconde mensagem de erro
+        }
 
-    // Limpa os slots e esconde a seção se não houver um serviço ou data válida
-    availableTimeSlotsDiv.innerHTML = '';
-    availableTimeSlotsSection.classList.add('hidden');
-    hideError(); // Esconde qualquer erro anterior
+        function hideSuccess() {
+            successMessageDiv.classList.add('hidden');
+        }
 
-    if (!serviceId) {
-        showError('Por favor, selecione um tipo de serviço primeiro.');
-        return; // Sai da função se não houver serviço selecionado
-    }
+        function formatPhoneNumber(number) {
+            // Remove tudo que não for dígito
+            const cleanNum = number.replace(/\D/g, '');
 
-    if (!selectedDate) {
-        showError('Por favor, selecione uma data.');
-        return; // Sai da função se não houver data selecionada
-    }
-
-    // Se ambos estão definidos, carregue os horários
-    await loadAvailableTimes(serviceId, selectedDate);
-                timeSection.style.display = 'block';
-            } else {
-                // Se um dos dois não estiver selecionado, oculta a seção de horários
-                timeSection.style.display = 'none';
-                timeGrid.innerHTML = ''; // Limpa os horários
-                selectedTime = ''; // Reseta o horário selecionado
+            // Formata (XX) XXXXX-XXXX
+            if (cleanNum.length === 11) {
+                return `(${cleanNum.substring(0, 2)}) ${cleanNum.substring(2, 7)}-${cleanNum.substring(7, 11)}`;
             }
-            updateSummary();
+            // Formata (XX) XXXX-XXXX (para números mais antigos)
+            else if (cleanNum.length === 10) {
+                return `(${cleanNum.substring(0, 2)}) ${cleanNum.substring(2, 6)}-${cleanNum.substring(6, 10)}`;
+            }
+            return number; // Retorna o original se não corresponder
         }
 
-        // Load services on initialization
+        // --- Carregamento de Dados Iniciais ---
+
         async function loadServices() {
             try {
-                const response = await fetch(`${API_BASE_URL}/services`);
-                if (!response.ok) throw new Error('Error loading services');
-                
-                services = await response.json();
-                
-                serviceSelect.innerHTML = '<option value="">Select a service</option>';
-                
-                // Mapear os dados recebidos para os nomes e preços desejados
-                // REMOVIDO: Este mapeamento fixo é redundante se o backend já envia o name e price corretos.
-                // Usaremos diretamente os dados do 'services' array
-                
-                services.forEach(service => {
-                    const option = document.createElement('option');
-                    option.value = service.service_id; // <-- Altere para service.id
-                    option.textContent = `${service.name} ${service.price}`; // Usar name e price do backend
-                    serviceSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error loading services:', error);
-                showError('Error loading services. Please try again.');
-            }
-        }
-
-        // MODIFICADO: loadAvailableTimes agora aceita service_key
-        async function loadAvailableTimes(date, serviceKey) {
-            try {
-                loadingTimes.classList.remove('hidden');
-                timeGrid.innerHTML = '';
-                selectedTime = ''; // Resetar o tempo selecionado ao recarregar
-                
-                const response = await fetch(`${API_BASE_URL}/available-times?date=${date}&service_id=${serviceKey}`); // <--- ATUALIZADO AQUI
+                showLoadingSpinner();
+                const response = await fetch('/api/services');
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error loading times');
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
                 }
-                
-                const data = await response.json();
-                const availableTimes = data.available_times;
-                
-                loadingTimes.classList.add('hidden');
-                
-                if (availableTimes.length === 0) {
-                    timeGrid.innerHTML = '<p style="text-align: center; color: #555;">No times available for this date and service.</p>';
+                const services = await response.json();
+
+                services.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.service_id; // *** CORRIGIDO: Agora usa service_id (numérico) ***
+                    option.textContent = `${service.name} - $${service.price.toFixed(2)}`; // Formata preço
+                    option.dataset.duration = service.duration; // Armazena duração para uso futuro
+                    option.dataset.price = service.price.toFixed(2); // Armazena preço
+                    option.dataset.name = service.name; // Armazena nome
+                    serviceSelect.appendChild(option);
+                });
+                hideLoadingSpinner();
+            } catch (error) {
+                console.error('Error loading services:', error);
+                showError(`Erro ao carregar serviços: ${error.message || error}`);
+                hideLoadingSpinner();
+            }
+        }
+
+        // --- Lógica de Seleção ---
+
+        async function loadAvailableTimes(serviceId, date) {
+            try {
+                showLoadingSpinner();
+                availableTimeSlotsDiv.innerHTML = ''; // Limpa slots anteriores
+                availableTimeSlotsSection.classList.add('hidden'); // Esconde a seção enquanto carrega
+
+                const response = await fetch(`/api/available-times?date=${date}&service_id=${serviceId}`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const times = await response.json();
+
+                if (times.length === 0) {
+                    availableTimeSlotsDiv.innerHTML = '<p>Nenhum horário disponível para esta data e serviço.</p>';
                 } else {
-                    availableTimes.forEach(time => {
-                        const timeSlot = document.createElement('div');
-                        timeSlot.className = 'time-slot';
-                        timeSlot.textContent = time;
-                        timeSlot.addEventListener('click', () => selectTime(time, timeSlot));
-                        timeGrid.appendChild(timeSlot);
+                    times.forEach(slot => {
+                        const button = document.createElement('button');
+                        button.className = 'time-slot-button';
+                        button.dataset.startTime = slot.start_time; // Armazena o horário de início
+                        button.dataset.endTime = slot.end_time; // Armazena o horário de término
+                        button.textContent = slot.start_time; // Exibe o horário de início
+                        button.addEventListener('click', () => selectTimeSlot(slot.start_time, slot.end_time));
+                        availableTimeSlotsDiv.appendChild(button);
                     });
                 }
+                availableTimeSlotsSection.classList.remove('hidden'); // Mostra a seção
             } catch (error) {
                 console.error('Error loading times:', error);
-                loadingTimes.classList.add('hidden');
-                showError(error.message || 'Error loading available times. Please try again.');
+                showError(`Erro ao carregar horários: ${error.message || error}`);
+            } finally {
+                hideLoadingSpinner();
             }
         }
 
-        function selectTime(time, element) {
-            // Remove previous selection
-            document.querySelectorAll('.time-slot').forEach(slot => {
-                slot.classList.remove('selected');
+        function selectTimeSlot(startTime, endTime) {
+            // Remove a seleção de todos os botões antes de aplicar ao novo
+            document.querySelectorAll('.time-slot-button').forEach(btn => {
+                btn.classList.remove('selected');
             });
-            
-            // Select new time
-            element.classList.add('selected');
-            selectedTime = time;
-            updateSummary();
+
+            // Adiciona a classe 'selected' ao botão clicado
+            const selectedButton = document.querySelector(`[data-start-time="${startTime}"]`);
+            if (selectedButton) {
+                selectedButton.classList.add('selected');
+            }
+
+            // Armazena o horário selecionado no formData
+            formData.time = startTime;
+            formData.endTime = endTime; // Armazena o tempo de término também
+            updateAppointmentSummary();
         }
 
-        function updateSummary() {
-            const serviceKey = serviceSelect.value; // service_key
-            const date = dateInput.value;
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
+        async function handleSelectionChange() {
+            hideError(); // Esconde erros anteriores
 
-            // Encontrar o objeto de serviço completo pelo serviceKey
-            const selectedService = services.find(s => s.service_key === serviceKey);
-            const serviceNameForDisplay = selectedService ? selectedService.name : 'N/A';
-            const servicePriceForDisplay = selectedService ? selectedService.price : '';
+            const serviceId = serviceSelect.value;
+            const selectedDate = dateInput.value;
 
-            formData = { 
-                service: serviceKey, // Mantém service_key para enviar ao backend
-                service_name_display: serviceNameForDisplay, // Adiciona nome para exibição no resumo
-                service_price_display: servicePriceForDisplay, // Adiciona preço para exibição no resumo
-                date, 
-                time: selectedTime, 
-                name, 
-                email, 
-                phone 
-            };
+            // Limpa os slots e esconde a seção se não houver um serviço ou data válida
+            availableTimeSlotsDiv.innerHTML = '';
+            availableTimeSlotsSection.classList.add('hidden');
 
-            if (serviceKey && date && selectedTime) { // Verifique serviceKey, não o objeto
-                summaryCard.classList.remove('hidden');
-                
-                const summaryContent = document.getElementById('summary-content');
-                summaryContent.innerHTML = `
-                    <div class="summary-item">
-                        <h4>Service</h4>
-                        <p>${formData.service_name_display}</p>
-                        <p style="font-size: 0.875rem; color: #555;">${formData.service_price_display}</p>
-                    </div>
-                    <div class="summary-item">
-                        <h4>Date</h4>
-                        <p>${new Date(date).toLocaleDateString('en-US')}</p>
-                    </div>
-                    <div class="summary-item">
-                        <h4>Time</h4>
-                        <p>${selectedTime}</p>
-                    </div>
-                `;
-                
-                // Enable button if all required fields are filled
-                confirmBtn.disabled = !(name && email);
+            if (!serviceId) {
+                showError('Por favor, selecione um tipo de serviço primeiro.');
+                formData.service = null; // Limpa o serviço se não houver seleção
+                formData.date = null;
+                formData.time = null;
+                formData.endTime = null;
+                updateAppointmentSummary();
+                return;
+            }
+
+            // Pega os detalhes do serviço do option selecionado
+            const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+            formData.service = serviceId; // O ID numérico
+            formData.serviceName = selectedOption.dataset.name;
+            formData.serviceDuration = parseInt(selectedOption.dataset.duration);
+            formData.servicePrice = parseFloat(selectedOption.dataset.price);
+
+            if (!selectedDate) {
+                showError('Por favor, selecione uma data.');
+                formData.date = null; // Limpa a data se não houver seleção
+                formData.time = null;
+                formData.endTime = null;
+                updateAppointmentSummary();
+                return;
+            }
+            formData.date = selectedDate;
+
+            // Se ambos estão definidos, carregue os horários
+            await loadAvailableTimes(serviceId, selectedDate);
+            updateAppointmentSummary(); // Atualiza o resumo após carregar horários ou erro
+        }
+
+        // --- Atualização do Resumo e Habilitação do Botão ---
+
+        function updateAppointmentSummary() {
+            // Atualiza os dados do cliente
+            formData.fullName = fullNameInput.value.trim();
+            formData.email = emailInput.value.trim();
+            formData.phone = formatPhoneNumber(phoneInput.value.trim());
+
+            // Atualiza a exibição no resumo
+            document.getElementById('summaryService').textContent = formData.serviceName || 'N/A';
+            document.getElementById('summaryDate').textContent = formData.date ? new Date(formData.date + 'T12:00:00').toLocaleDateString('pt-BR') : 'N/A'; // Adiciona T12:00:00 para evitar problemas de fuso horário com toLocaleDateString
+            document.getElementById('summaryTime').textContent = formData.time || 'N/A';
+            document.getElementById('summaryPrice').textContent = formData.servicePrice ? `$${formData.servicePrice.toFixed(2)}` : 'N/A';
+            document.getElementById('summaryName').textContent = formData.fullName || 'N/A';
+            document.getElementById('summaryEmail').textContent = formData.email || 'N/A';
+            document.getElementById('summaryPhone').textContent = formData.phone || 'N/A';
+
+            // Mostra/Esconde o resumo
+            const isSummaryComplete = formData.service && formData.date && formData.time && formData.fullName && formData.email && formData.phone;
+            if (isSummaryComplete) {
+                appointmentSummary.classList.remove('hidden');
+                confirmButton.disabled = false;
             } else {
-                summaryCard.classList.add('hidden');
-                confirmBtn.disabled = true; // Desabilita o botão se a seleção estiver incompleta
+                appointmentSummary.classList.add('hidden');
+                confirmButton.disabled = true;
             }
         }
+
+        // --- Lógica de Confirmação de Agendamento ---
 
         async function confirmAppointment() {
-            if (formData.name && formData.email && formData.service && formData.date && formData.time) { // Mais verificações
-                try {
-                    // Show loading
-                    confirmBtn.disabled = true;
-                    confirmText.classList.add('hidden');
-                    confirmLoading.classList.remove('hidden');
-                    hideError();
-                    
-                    const appointmentData = {
-                        client_name: formData.name,
-                        client_email: formData.email,
-                        client_phone: formData.phone || null,
-                        service_type: formData.service, // Envia o service_key (ID) original para o backend
-                        appointment_date: formData.date,
-                        appointment_time: formData.time
-                    };
-                    
-                    const response = await fetch(`${API_BASE_URL}/appointments`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(appointmentData)
-                    });
-                    
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error creating appointment');
-                    }
-                    
-                    const result = await response.json();
-                    console.log('Appointment created:', result);
-                    
-                    // Show success screen
-                    showSuccessScreen();
-                    
-                } catch (error) {
-                    console.error('Error confirming appointment:', error);
-                    showError(error.message || 'Error confirming appointment. Please try again.');
-                } finally {
-                    // Hide loading
-                    confirmBtn.disabled = false;
-                    confirmText.classList.remove('hidden');
-                    confirmLoading.classList.add('hidden');
+            hideError();
+            hideSuccess();
+            confirmButton.disabled = true; // Desabilita o botão para evitar cliques múltiplos
+
+            // Validação final antes de enviar
+            if (!formData.service || !formData.date || !formData.time || !formData.fullName || !formData.email || !formData.phone) {
+                showError('Por favor, preencha todos os campos do agendamento.');
+                confirmButton.disabled = false;
+                return;
+            }
+
+            const appointmentData = {
+                service_id: formData.service,
+                date: formData.date,
+                start_time: formData.time,
+                end_time: formData.endTime, // Inclui o tempo de término
+                client_name: formData.fullName,
+                client_email: formData.email,
+                client_phone: formData.phone
+            };
+
+            try {
+                showLoadingSpinner();
+                const response = await fetch('/api/appointments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(appointmentData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
                 }
-            } else {
-                showError('Please fill in all required fields (Service, Date, Time, Name, Email).');
+
+                const result = await response.json();
+                showSuccess('Agendamento confirmado com sucesso! Verifique seu e-mail.');
+                console.log('Appointment Confirmed:', result);
+
+                // Opcional: Redirecionar ou limpar o formulário após sucesso
+                setTimeout(() => {
+                    // window.location.reload(); // Recarrega a página
+                    // Ou limpar campos para novo agendamento
+                    serviceSelect.value = '';
+                    dateInput.value = '';
+                    availableTimeSlotsDiv.innerHTML = '';
+                    availableTimeSlotsSection.classList.add('hidden');
+                    fullNameInput.value = '';
+                    emailInput.value = '';
+                    phoneInput.value = '';
+                    formData.service = null;
+                    formData.date = null;
+                    formData.time = null;
+                    formData.endTime = null;
+                    formData.fullName = null;
+                    formData.email = null;
+                    formData.phone = null;
+                    updateAppointmentSummary(); // Limpa o resumo
+                    hideSuccess();
+                    confirmButton.disabled = false;
+                }, 3000); // Exibe mensagem por 3 segundos antes de limpar
+            } catch (error) {
+                console.error('Error confirming appointment:', error);
+                showError(`Erro ao confirmar agendamento: ${error.message || error}`);
+                confirmButton.disabled = false;
+            } finally {
+                hideLoadingSpinner();
             }
         }
 
-        function showSuccessScreen() {
-            mainScreen.classList.add('hidden');
-            successScreen.classList.remove('hidden');
-            successScreen.classList.add('fade-in');
-            
-            // Reutiliza os dados de exibição do formData
-            const appointmentDetails = document.getElementById('appointment-details');
-            appointmentDetails.innerHTML = `
-                <p><strong>Date:</strong> ${new Date(formData.date).toLocaleDateString('en-US')}</p>
-                <p><strong>Time:</strong> ${formData.time}</p>
-                <p><strong>Service:</strong> ${formData.service_name_display} ${formData.service_price_display}</p>
-                <p><strong>Client:</strong> ${formData.name}</p>
-                <p><strong>E-mail:</strong> ${formData.email}</p>
-                ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
-            `;
-        }
+        // --- Event Listeners ---
 
-        function resetForm() {
-            // Clear form
-            serviceSelect.value = '';
-            dateInput.value = '';
-            selectedTime = '';
-            document.getElementById('name').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('phone').value = '';
-            
-            // Clear selections
-            document.querySelectorAll('.time-slot').forEach(slot => {
-                slot.classList.remove('selected');
-            });
-            timeGrid.innerHTML = ''; // Limpar os horários exibidos
-            
-            // Hide sections
-            timeSection.style.display = 'none';
-            summaryCard.classList.add('hidden');
-            
-            // Return to main screen
-            successScreen.classList.add('hidden');
-            mainScreen.classList.remove('hidden');
-            
-            formData = {};
-            hideError();
-            confirmBtn.disabled = true; // Garante que o botão de confirmar esteja desabilitado
-        }
+        // Carrega serviços quando a página é carregada
+        document.addEventListener('DOMContentLoaded', () => {
+            // Define a data mínima como hoje
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateInput.min = `${year}-${month}-${day}`;
 
-        // Initialize application
-        document.addEventListener('DOMContentLoaded', function() {
             loadServices();
+            updateAppointmentSummary(); // Inicializa o resumo e o estado do botão
         });
+
+        // Adiciona event listeners para mudanças que afetam o agendamento ou resumo
+        serviceSelect.addEventListener('change', handleSelectionChange);
+        dateInput.addEventListener('change', handleSelectionChange);
+        fullNameInput.addEventListener('input', updateAppointmentSummary);
+        emailInput.addEventListener('input', updateAppointmentSummary);
+        phoneInput.addEventListener('input', updateAppointmentSummary);
+        confirmButton.addEventListener('click', confirmAppointment);
+
     </script>
 </body>
 </html>
