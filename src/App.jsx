@@ -1,84 +1,160 @@
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button.jsx'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
-import { Input } from '@/components/ui/input.jsx'
-import { Label } from '@/components/ui/label.jsx'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
-import { Calendar, Clock, User, Mail, Phone, CheckCircle } from 'lucide-react'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button.jsx';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { Input } from '@/components/ui/input.jsx';
+import { Label } from '@/components/ui/label.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
+import { Calendar, Clock, User, Mail, Phone, CheckCircle, Loader2 } from 'lucide-react'; // Adicionado Loader2 para o spinner
+import './App.css';
+
+// URL da API do seu backend
+// IMPORTANTE: Altere para 'https://api.360tinted.com' DEPOIS que o subdomínio estiver configurado e funcionando no Render!
+const API_BASE_URL = 'https://api.360tinted.com/api'; // Mudar para https://api.360tinted.com/api
 
 function App() {
-  const [selectedDate, setSelectedDate] = useState('')
-  const [selectedTime, setSelectedTime] = useState('')
-  const [selectedService, setSelectedService] = useState('')
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedServiceId, setSelectedServiceId] = useState(''); // Mudado para serviceId
   const [clientInfo, setClientInfo] = useState({
     name: '',
     email: '',
     phone: ''
-  })
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [availableTimes, setAvailableTimes] = useState([])
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [services, setServices] = useState([]); // Agora os serviços serão carregados da API
+  const [loadingServices, setLoadingServices] = useState(true);
+  const [loadingTimes, setLoadingTimes] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
-  // Serviços disponíveis
-  const services = [
-    { id: 'consulta', name: 'Consulta Geral', duration: 60, price: 'R$ 150,00' },
-    { id: 'exame', name: 'Exame Médico', duration: 30, price: 'R$ 80,00' },
-    { id: 'retorno', name: 'Consulta de Retorno', duration: 30, price: 'R$ 100,00' },
-    { id: 'procedimento', name: 'Procedimento Especial', duration: 90, price: 'R$ 250,00' }
-  ]
+  // Mapeamento de serviços para exibir os nomes corretos no frontend (se necessário)
+  // Se o backend já retornar os nomes corretos, este mapeamento pode ser simplificado ou removido
+  const serviceDisplayMapping = {
+    "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
+    "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
+    "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
+    "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
+    "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
+    "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
+    "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
+    "tint_removal": { name: "Tint Removal", price: "(Contact us)" }, // Alterado para (Contact us)
+    "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
+  };
 
-  // Horários disponíveis (simulação)
-  const generateAvailableTimes = (date) => {
-    const times = []
-    const startHour = 8
-    const endHour = 18
-    
-    for (let hour = startHour; hour < endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
-        times.push(timeString)
-      }
-    }
-    
-    // Simular alguns horários já ocupados
-    const occupiedTimes = ['09:00', '10:30', '14:00', '16:30']
-    return times.filter(time => !occupiedTimes.includes(time))
-  }
-
+  // Efeito para carregar serviços da API quando o componente monta
   useEffect(() => {
-    if (selectedDate) {
-      setAvailableTimes(generateAvailableTimes(selectedDate))
-    }
-  }, [selectedDate])
+    const fetchServices = async () => {
+      try {
+        setLoadingServices(true);
+        setError('');
+        const response = await fetch(`${API_BASE_URL}/services`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch services');
+        }
+        const data = await response.json();
+        setServices(data);
+      } catch (err) {
+        console.error('Error fetching services:', err);
+        setError('Failed to load services. Please try again later.');
+      } finally {
+        setLoadingServices(false);
+      }
+    };
+    fetchServices();
+  }, []); // Executa apenas uma vez ao montar o componente
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (selectedDate && selectedTime && selectedService && clientInfo.name && clientInfo.email) {
-      setIsSubmitted(true)
-      // Aqui seria feita a chamada para a API do backend
-      console.log('Agendamento:', {
-        date: selectedDate,
-        time: selectedTime,
-        service: selectedService,
-        client: clientInfo
-      })
+  // Efeito para carregar horários disponíveis da API quando a data selecionada muda
+  useEffect(() => {
+    const fetchAvailableTimes = async () => {
+      if (selectedDate) {
+        try {
+          setLoadingTimes(true);
+          setError('');
+          const response = await fetch(`${API_BASE_URL}/available-times?date=${selectedDate}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch available times');
+          }
+          const data = await response.json();
+          setAvailableTimes(data.available_times);
+        } catch (err) {
+          console.error('Error fetching available times:', err);
+          setError('Failed to load available times. Please try again.');
+          setAvailableTimes([]); // Limpa os horários em caso de erro
+        } finally {
+          setLoadingTimes(false);
+        }
+      } else {
+        setAvailableTimes([]);
+      }
+    };
+    fetchAvailableTimes();
+  }, [selectedDate]); // Executa quando selectedDate muda
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedDate || !selectedTime || !selectedServiceId || !clientInfo.name || !clientInfo.email) {
+      setError('Please fill in all required fields (Service, Date, Time, Name, Email).');
+      return;
     }
-  }
+
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/appointments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          client_name: clientInfo.name,
+          client_email: clientInfo.email,
+          client_phone: clientInfo.phone || null,
+          service_type: selectedServiceId, // Envia o service_key para o backend
+          appointment_date: selectedDate,
+          appointment_time: selectedTime,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create appointment.');
+      }
+
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error('Error submitting appointment:', err);
+      setError(err.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleInputChange = (field, value) => {
     setClientInfo(prev => ({
       ...prev,
       [field]: value
-    }))
-  }
+    }));
+  };
 
   const resetForm = () => {
-    setSelectedDate('')
-    setSelectedTime('')
-    setSelectedService('')
-    setClientInfo({ name: '', email: '', phone: '' })
-    setIsSubmitted(false)
-  }
+    setSelectedDate('');
+    setSelectedTime('');
+    setSelectedServiceId('');
+    setClientInfo({ name: '', email: '', phone: '' });
+    setIsSubmitted(false);
+    setError('');
+    setAvailableTimes([]);
+    // Recarrega os serviços caso a lista tenha sido modificada no backend (opcional, mas bom para consistência)
+    // fetchServices(); // Se quiser recarregar os serviços após cada agendamento
+  };
+
+  // Encontra o serviço selecionado para exibição
+  const selectedServiceDetails = services.find(s => s.service_key === selectedServiceId);
+  const serviceNameForDisplay = selectedServiceDetails ? selectedServiceDetails.name : (serviceDisplayMapping[selectedServiceId]?.name || 'N/A');
+  const servicePriceForDisplay = selectedServiceDetails ? selectedServiceDetails.price : (serviceDisplayMapping[selectedServiceId]?.price || 'N/A');
+
 
   if (isSubmitted) {
     return (
@@ -92,10 +168,12 @@ function App() {
                 Seu agendamento foi realizado com sucesso. Você receberá um e-mail de confirmação em breve.
               </p>
               <div className="bg-gray-50 p-4 rounded-lg mb-4 text-left">
-                <p><strong>Data:</strong> {new Date(selectedDate).toLocaleDateString('pt-BR')}</p>
+                <p><strong>Data:</strong> {new Date(selectedDate).toLocaleDateString('en-US')}</p> {/* Alterado para en-US */}
                 <p><strong>Horário:</strong> {selectedTime}</p>
-                <p><strong>Serviço:</strong> {services.find(s => s.id === selectedService)?.name}</p>
+                <p><strong>Serviço:</strong> {serviceNameForDisplay} {servicePriceForDisplay}</p>
                 <p><strong>Cliente:</strong> {clientInfo.name}</p>
+                <p><strong>E-mail:</strong> {clientInfo.email}</p>
+                {clientInfo.phone && <p><strong>Telefone:</strong> {clientInfo.phone}</p>}
               </div>
               <Button onClick={resetForm} className="w-full">
                 Fazer Novo Agendamento
@@ -104,7 +182,7 @@ function App() {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -114,6 +192,13 @@ function App() {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Agendamento Online</h1>
           <p className="text-xl text-gray-600">Agende sua consulta de forma rápida e fácil</p>
         </div>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong className="font-bold">Error:</strong>
+            <span className="block sm:inline"> {error}</span>
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Seleção de Serviço e Data/Hora */}
@@ -131,16 +216,16 @@ function App() {
               {/* Seleção de Serviço */}
               <div>
                 <Label htmlFor="service">Tipo de Serviço</Label>
-                <Select value={selectedService} onValueChange={setSelectedService}>
+                <Select value={selectedServiceId} onValueChange={setSelectedServiceId} disabled={loadingServices}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione um serviço" />
+                    <SelectValue placeholder={loadingServices ? "Carregando serviços..." : "Selecione um serviço"} />
                   </SelectTrigger>
                   <SelectContent>
                     {services.map(service => (
-                      <SelectItem key={service.id} value={service.id}>
+                      <SelectItem key={service.service_key} value={service.service_key}>
                         <div className="flex justify-between items-center w-full">
-                          <span>{service.name}</span>
-                          <span className="text-sm text-gray-500 ml-2">{service.price}</span>
+                          <span>{serviceDisplayMapping[service.service_key]?.name || service.name}</span>
+                          <span className="text-sm text-gray-500 ml-2">{serviceDisplayMapping[service.service_key]?.price || service.price}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -164,19 +249,23 @@ function App() {
               {selectedDate && (
                 <div>
                   <Label htmlFor="time">Horário Disponível</Label>
-                  <Select value={selectedTime} onValueChange={setSelectedTime}>
+                  <Select value={selectedTime} onValueChange={setSelectedTime} disabled={loadingTimes}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecione um horário" />
+                      <SelectValue placeholder={loadingTimes ? "Carregando horários..." : "Selecione um horário"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableTimes.map(time => (
-                        <SelectItem key={time} value={time}>
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            {time}
-                          </div>
-                        </SelectItem>
-                      ))}
+                      {availableTimes.length > 0 ? (
+                        availableTimes.map(time => (
+                          <SelectItem key={time} value={time}>
+                            <div className="flex items-center gap-2">
+                              <Clock className="h-4 w-4" />
+                              {time}
+                            </div>
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="no-times" disabled>Nenhum horário disponível</SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -243,7 +332,7 @@ function App() {
         </div>
 
         {/* Resumo e Confirmação */}
-        {selectedDate && selectedTime && selectedService && (
+        {selectedDate && selectedTime && selectedServiceId && (
           <Card className="mt-8">
             <CardHeader>
               <CardTitle>Resumo do Agendamento</CardTitle>
@@ -252,12 +341,12 @@ function App() {
               <div className="grid md:grid-cols-3 gap-4 mb-6">
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-900">Serviço</h4>
-                  <p className="text-blue-700">{services.find(s => s.id === selectedService)?.name}</p>
-                  <p className="text-sm text-blue-600">{services.find(s => s.id === selectedService)?.price}</p>
+                  <p className="text-blue-700">{serviceNameForDisplay}</p>
+                  <p className="text-sm text-blue-600">{servicePriceForDisplay}</p>
                 </div>
                 <div className="bg-green-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-green-900">Data</h4>
-                  <p className="text-green-700">{new Date(selectedDate).toLocaleDateString('pt-BR')}</p>
+                  <p className="text-green-700">{new Date(selectedDate).toLocaleDateString('en-US')}</p> {/* Alterado para en-US */}
                 </div>
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-purple-900">Horário</h4>
@@ -269,9 +358,16 @@ function App() {
                 <Button 
                   type="submit" 
                   className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                  disabled={!clientInfo.name || !clientInfo.email}
+                  disabled={!clientInfo.name || !clientInfo.email || submitting}
                 >
-                  Confirmar Agendamento
+                  {submitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Confirmando...
+                    </>
+                  ) : (
+                    "Confirmar Agendamento"
+                  )}
                 </Button>
               </form>
             </CardContent>
@@ -279,8 +375,7 @@ function App() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default App
-
+export default App;
