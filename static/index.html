@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book your appointment online with 360 Tinted - Professional window tinting services in San Carlos and Bay Area">
+    <title>Online Appointment Booking - 360 Tinted</title>
+    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Header */
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            background-color: #007BFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        /* Main Content */
+        .main-content {
+            background-color: white;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .booking-header {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .booking-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .booking-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Booking Steps */
+        .booking-steps {
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #007BFF;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .step.active .step-number {
+            background-color: #28a745;
+        }
+
+        /* Form Container */
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .form-section p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        /* Service Selection */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .service-card:hover {
+            border-color: #007BFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        .service-card.selected {
+            border-color: #007BFF;
+            background-color: #f8f9ff;
+        }
+
+        .service-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .service-card .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007BFF;
+            margin-bottom: 5px;
+        }
+
+        .service-card .duration {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Date and Time Selection */
+        .datetime-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .time-slot:hover {
+            border-color: #007BFF;
+            background-color: #f8f9ff;
+        }
+
+        .time-slot.selected {
+            border-color: #007BFF;
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .time-slot.unavailable {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* Navigation Buttons */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .btn-prev {
+            background-color: #6c757d;
+        }
+
+        .btn-prev:hover {
+            background-color: #545b62;
+        }
+
+        /* Loading and Messages */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007BFF;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 15px;
+            color: #007BFF;
+        }
+
+        .footer-section p {
+            margin-bottom: 10px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #007BFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #ccc;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .nav-buttons {
+                justify-content: center;
+            }
+
+            .booking-header h1 {
+                font-size: 2rem;
+            }
+
+            .booking-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .step {
+                margin: 0;
+                justify-content: center;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .datetime-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+            }
+
+            .booking-header {
+                padding: 30px 15px;
+            }
+
+            .booking-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-img">360</div>
+                    <h1>360 TINTED</h1>
+                </div>
+                <div class="nav-buttons">
+                    <a href="#" class="btn btn-secondary" id="servicesBtn">Services</a>
+                    <a href="https://www.360tinted.com/" class="btn" target="_blank">Back to Main Website</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Booking Header -->
+            <div class="booking-header">
+                <h1>Online Appointment Booking</h1>
+                <p>Schedule your appointment quickly and easily</p>
+            </div>
+
+            <!-- Booking Steps -->
+            <div class="booking-steps">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <span>Your Information</span>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <span>Select Service and Time</span>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <span>Confirmation</span>
+                </div>
+            </div>
+
+            <!-- Form Container -->
+            <div class="form-container">
+                <!-- Messages -->
+                <div id="successMessage" class="message success"></div>
+                <div id="errorMessage" class="message error"></div>
+                <div id="loading" class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading services...</p>
+                </div>
+
+                <!-- Step 1: Personal Information -->
+                <div class="form-section active" id="section1">
+                    <h2>Your Information:</h2>
+                    <p>Please fill in your details to confirm the appointment</p>
+                    
+                    <form id="personalInfoForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name <span class="required">*</span></label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">E-mail <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="carDetails">About the car, manufacturer, model, year,</label>
+                            <textarea id="carDetails" name="carDetails" placeholder="e.g., 2023 Tesla Model 3, White"></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: Service and Time Selection -->
+                <div class="form-section" id="section2">
+                    <h2>Select Service and Time</h2>
+                    <p>Choose the type of service and desired time</p>
+                    
+                    <div class="form-group">
+                        <label>Service Type:</label>
+                        <div class="service-grid" id="serviceGrid">
+                            <!-- Services will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price:</label>
+                        <div id="selectedPrice" style="font-size: 1.2rem; font-weight: bold; color: #007BFF;">Select a service</div>
+                    </div>
+
+                    <div class="datetime-container">
+                        <div class="form-group">
+                            <label for="appointmentDate">Date:</label>
+                            <input type="date" id="appointmentDate" name="appointmentDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Time:</label>
+                            <div class="time-slots" id="timeSlots">
+                                <!-- Time slots will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Confirmation -->
+                <div class="form-section" id="section3">
+                    <h2>Appointment Confirmation</h2>
+                    <p>Please review your appointment details</p>
+                    
+                    <div id="appointmentSummary">
+                        <!-- Appointment summary will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-prev" id="prevBtn" style="display: none;">Previous</button>
+                    <button type="button" class="btn" id="nextBtn">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Address & Hours -->
+                <div class="footer-section">
+                    <h3>Address & Hours</h3>
+                    <p>90 Glenn Way, San Carlos, CA, 94070</p>
+                    <p><strong>Hours:</strong></p>
+                    <p>Monday - Friday: 8am - 5:30pm</p>
+                    <p>Saturday: 9am - 5:30pm</p>
+                    <p>Sunday: 9am - 5:30pm</p>
+                </div>
+
+                <!-- Social Media -->
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/profile.php?id=61572377826208" target="_blank" class="social-icon">
+                            <span>f</span>
+                        </a>
+                        <a href="https://www.instagram.com/360.tinted/" target="_blank" class="social-icon">
+                            <span>@</span>
+                        </a>
+                        <a href="https://www.tiktok.com/@360tinted?_t=ZP-8uTYjT9bYEg&_r=1" target="_blank" class="social-icon">
+                            <span>T</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <a href="https://www.360tinted.com/#contact" target="_blank" class="btn">Contact</a>
+                    <p style="margin-top: 15px;">
+                        <strong>Phone:</strong> <a href="tel:+14156303646" style="color: #007BFF;">(415) 630-3646</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 360 Tinted. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
