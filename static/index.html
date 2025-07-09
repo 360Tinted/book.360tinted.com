@@ -49,7 +49,7 @@
             gap: 15px;
         }
 
-        .logo-img {
+        .logo-img { /* Este estilo se aplica se o seu logo for um círculo com texto. Se for uma imagem, este bloco pode não ser necessário. */
             width: 60px;
             height: 60px;
             background-color: #007BFF;
@@ -373,36 +373,88 @@
             border: 1px solid #f5c6cb;
         }
 
-        /* Footer */
-.footer {
-    background-color: #333;
-    color: white;
-    padding: 40px 0;
-    margin-top: 40px;
-}
+        /* Estilos para o Rodapé (Footer) - CÓDIGO DO SEU SITE PRINCIPAL */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
 
-.footer-content {
-    display: grid; /* <-- Atenção aqui, era 'grid' no seu site de agendamento */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-bottom: 20px;
-}
+        .footer-content {
+            display: flex; /* Agora usa Flexbox */
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
 
-.footer-section h3 {
-    margin-bottom: 15px;
-    color: #007BFF; /* <-- Atenção aqui, cor azul */
-}
+        .footer-section {
+            width: 30%;
+            margin-bottom: 20px;
+        }
 
-/* ... e o restante dos estilos do rodapé do seu site de agendamento ... */
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            /* Cor dos títulos herdada do 'footer' (branco) */
+        }
 
-.footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #444;
-    color: #ccc; /* <-- Atenção aqui, cor cinza claro */
-}
+        .footer-section p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
 
-        /* Responsive Design */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* Estilos para as imagens dentro dos links sociais */
+        .social-icons a img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        .social-icons a:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Garante que o link social não tenha o background azul antigo */
+        .social-icons .social-icon {
+            background-color: transparent;
+            border-radius: 0;
+            display: block; /* Garante que o link ocupe o espaço para a imagem */
+            text-decoration: none; /* Remove sublinhado */
+            color: inherit; /* Garante que a cor do texto do link seja herdada */
+        }
+
+        .phone {
+            font-size: 1.2rem;
+        }
+
+        .phone a {
+            color: #fff; /* Cor do link do telefone (branco) */
+            text-decoration: none;
+        }
+
+        .phone a:hover {
+            color: #007BFF; /* Cor do link do telefone no hover (azul primário) */
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #444;
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #fff; /* Cor do texto de copyright (branco) */
+        }
+
+        /* ==================== */
+        /* RESPONSIVIDADE MOBILE */
+        /* ==================== */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -447,8 +499,18 @@
             }
 
             .footer-content {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Esta regra já estava no seu código de agendamento. Se o objetivo é o Flexbox, a regra abaixo seria mais adequada. */
                 text-align: center;
+            }
+
+            /* Correção para o rodapé em mobile para usar o Flexbox */
+            .footer-section { /* Já tinha essa regra no meu código anterior, apenas para garantir */
+                width: 100%;
+                text-align: center;
+            }
+
+            .social-icons { /* Já tinha essa regra no meu código anterior, apenas para garantir */
+                justify-content: center;
             }
         }
 
@@ -476,7 +538,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -492,16 +553,13 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <div class="container">
         <div class="main-content">
-            <!-- Booking Header -->
             <div class="booking-header">
                 <h1>Online Appointment Booking</h1>
                 <p>Schedule your appointment quickly and easily</p>
             </div>
 
-            <!-- Booking Steps -->
             <div class="booking-steps">
                 <div class="step active" id="step1">
                     <div class="step-number">1</div>
@@ -517,9 +575,7 @@
                 </div>
             </div>
 
-            <!-- Form Container -->
             <div class="form-container">
-                <!-- Messages -->
                 <div id="successMessage" class="message success"></div>
                 <div id="errorMessage" class="message error"></div>
                 <div id="loading" class="loading">
@@ -527,7 +583,6 @@
                     <p>Loading services...</p>
                 </div>
 
-                <!-- Step 1: Personal Information -->
                 <div class="form-section active" id="section1">
                     <h2>Your Information:</h2>
                     <p>Please fill in your details to confirm the appointment</p>
@@ -555,7 +610,6 @@
                     </form>
                 </div>
 
-                <!-- Step 2: Service and Time Selection -->
                 <div class="form-section" id="section2">
                     <h2>Select Service and Time</h2>
                     <p>Choose the type of service and desired time</p>
@@ -563,8 +617,7 @@
                     <div class="form-group">
                         <label>Service Type:</label>
                         <div class="service-grid" id="serviceGrid">
-                            <!-- Services will be loaded here -->
-                        </div>
+                            </div>
                     </div>
 
                     <div class="form-group">
@@ -581,23 +634,19 @@
                         <div class="form-group">
                             <label>Time:</label>
                             <div class="time-slots" id="timeSlots">
-                                <!-- Time slots will be loaded here -->
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 3: Confirmation -->
                 <div class="form-section" id="section3">
                     <h2>Appointment Confirmation</h2>
                     <p>Please review your appointment details</p>
                     
                     <div id="appointmentSummary">
-                        <!-- Appointment summary will be displayed here -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- Navigation Buttons -->
                 <div class="form-navigation">
                     <button type="button" class="btn btn-prev" id="prevBtn" style="display: none;">Previous</button>
                     <button type="button" class="btn" id="nextBtn">Next</button>
@@ -606,11 +655,9 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <!-- Address & Hours -->
                 <div class="footer-section">
                     <h3>Address & Hours</h3>
                     <p>90 Glenn Way, San Carlos, CA, 94070</p>
@@ -620,28 +667,26 @@
                     <p>Sunday: 9am - 5:30pm</p>
                 </div>
 
-                <!-- Social Media -->
                 <div class="footer-section">
-    <h3>Follow Us</h3>
-    <div class="social-icons">
-        <a href="https://www.facebook.com/profile.php?id=61572377826208" target="_blank" class="social-icon">
-            <img src="images/facebook.png" alt="Facebook" class="social-media-logo" />
-        </a>
-        <a href="https://www.instagram.com/360.tinted/" target="_blank" class="social-icon">
-            <img src="images/instagram.png" alt="Instagram" class="social-media-logo" />
-        </a>
-        <a href="https://www.tiktok.com/@360tinted?_t=ZP-8uTYjT9bYEg&_r=1" target="_blank" class="social-icon">
-            <img src="images/tiktok2.png" alt="TikTok" class="social-media-logo" />
-        </a>
-    </div>
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/profile.php?id=61572377826208" target="_blank" class="social-icon">
+                            <img src="images/facebook.png" alt="Facebook" class="social-media-logo" />
+                        </a>
+                        <a href="https://www.instagram.com/360.tinted/" target="_blank" class="social-icon">
+                            <img src="images/instagram.png" alt="Instagram" class="social-media-logo" />
+                        </a>
+                        <a href="https://www.tiktok.com/@360tinted?_t=ZP-8uTYjT9bYEg&_r=1" target="_blank" class="social-icon">
+                            <img src="images/tiktok2.png" alt="TikTok" class="social-media-logo" />
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Contact -->
                 <div class="footer-section">
                     <h3>Contact Us</h3>
                     <a href="https://www.360tinted.com/#contact" target="_blank" class="btn">Contact</a>
                     <p style="margin-top: 15px;">
-                        <strong>Phone:</strong> <a href="tel:+14156303646" style="color: #007BFF;">(415) 630-3646</a>
+                        <strong>Phone:</strong> <a href="tel:+14156303646">(415) 630-3646</a>
                     </p>
                 </div>
             </div>
@@ -654,4 +699,3 @@
     <script src="app.js"></script>
 </body>
 </html>
-
