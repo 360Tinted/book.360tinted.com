@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input.jsx';
 import { Label } from '@/components/ui/label.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
-import { Calendar, Clock, User, Mail, Phone, CheckCircle, Loader2 } from 'lucide-react'; // Adicionado Loader2 para o spinner
+import { Calendar, Clock, User, Mail, Phone, CheckCircle, Loader2 } from 'lucide-react';
 import './App.css';
 
 // URL da API do seu backend
@@ -14,7 +14,7 @@ const API_BASE_URL = 'https://api.360tinted.com/api'; // Mudar para https://api.
 function App() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-  const [selectedServiceId, setSelectedServiceId] = useState(''); // Mudado para serviceId
+  const [selectedServiceId, setSelectedServiceId] = useState('');
   const [clientInfo, setClientInfo] = useState({
     name: '',
     email: '',
@@ -22,25 +22,14 @@ function App() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [availableTimes, setAvailableTimes] = useState([]);
-  const [services, setServices] = useState([]); // Agora os serviços serão carregados da API
+  const [services, setServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(true);
   const [loadingTimes, setLoadingTimes] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Mapeamento de serviços para exibir os nomes corretos no frontend (se necessário)
-  // Se o backend já retornar os nomes corretos, este mapeamento pode ser simplificado ou removido
-  const serviceDisplayMapping = {
-    "carbon_doors_rear": { name: "Carbon Tinting Installation Doors and Rear window", price: "$199" },
-    "carbon_windshield": { name: "Carbon Tinting Installation Windshield", price: "$150" },
-    "carbon_full_car_windshield": { name: "Carbon Tinting Full car + Windshield", price: "$349" },
-    "ceramic_doors_rear": { name: "Ceramic Tint Installation Doors and Rear window", price: "$299" },
-    "ceramic_windshield": { name: "Ceramic Tinting Installation Windshield", price: "$250" },
-    "ceramic_full_car_windshield": { name: "Ceramic Tinting Full car + Windshield", price: "$549" },
-    "custom_tint_large_vehicles": { name: "Custom Tint Service – Large Vehicles / Panoramic Glass", price: "(Contact us)" },
-    "tint_removal": { name: "Tint Removal", price: "(Contact us)" }, // Alterado para (Contact us)
-    "windows_tint_installation_removal": { name: "Windows Tint Installation + Removal of old Tint", price: "(Contact us)" }
-  };
+  // Não precisamos mais do serviceDisplayMapping hardcoded, pois os serviços vêm da API.
+  // const serviceDisplayMapping = { ... };
 
   // Efeito para carregar serviços da API quando o componente monta
   useEffect(() => {
@@ -62,16 +51,32 @@ function App() {
       }
     };
     fetchServices();
-  }, []); // Executa apenas uma vez ao montar o componente
+  }, []);
 
-  // Efeito para carregar horários disponíveis da API quando a data selecionada muda
+  // Efeito para carregar horários disponíveis da API quando a data OU o serviço selecionado mudam
   useEffect(() => {
     const fetchAvailableTimes = async () => {
-      if (selectedDate) {
+      // ** MODIFICADO AQUI: Adicionado selectedServiceId à condição **
+      if (selectedDate && selectedServiceId) {
         try {
           setLoadingTimes(true);
           setError('');
-          const response = await fetch(`${API_BASE_URL}/available-times?date=${selectedDate}`);
+
+          // Encontra o serviço selecionado para obter sua duração
+          const selectedService = services.find(s => s.service_key === selectedServiceId);
+          if (!selectedService) {
+            // Isso pode acontecer se o serviço não for encontrado, talvez por um estado inconsistente.
+            // Limpa horários e mostra aviso.
+            console.warn('Selected service not found, cannot fetch times with duration.');
+            setAvailableTimes([]);
+            setLoadingTimes(false);
+            return;
+          }
+          const serviceDuration = selectedService.duration; // Obtém a duração do serviço
+
+          // ** MODIFICADO AQUI: Incluído o parâmetro 'duration' na URL **
+          const response = await fetch(`${API_BASE_URL}/available-times?date=${selectedDate}&duration=${serviceDuration}`);
+          
           if (!response.ok) {
             throw new Error('Failed to fetch available times');
           }
@@ -89,7 +94,8 @@ function App() {
       }
     };
     fetchAvailableTimes();
-  }, [selectedDate]); // Executa quando selectedDate muda
+    // ** MODIFICADO AQUI: Adicionado selectedServiceId e services à lista de dependências **
+  }, [selectedDate, selectedServiceId, services]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,7 +117,7 @@ function App() {
           client_name: clientInfo.name,
           client_email: clientInfo.email,
           client_phone: clientInfo.phone || null,
-          service_type: selectedServiceId, // Envia o service_key para o backend
+          service_type: selectedServiceId,
           appointment_date: selectedDate,
           appointment_time: selectedTime,
         }),
@@ -146,14 +152,14 @@ function App() {
     setIsSubmitted(false);
     setError('');
     setAvailableTimes([]);
-    // Recarrega os serviços caso a lista tenha sido modificada no backend (opcional, mas bom para consistência)
-    // fetchServices(); // Se quiser recarregar os serviços após cada agendamento
+    // Não é necessário recarregar os serviços aqui, pois eles são carregados uma vez no useEffect inicial.
   };
 
   // Encontra o serviço selecionado para exibição
+  // ** MODIFICADO AQUI: Simplificado para usar apenas os dados 'services' da API **
   const selectedServiceDetails = services.find(s => s.service_key === selectedServiceId);
-  const serviceNameForDisplay = selectedServiceDetails ? selectedServiceDetails.name : (serviceDisplayMapping[selectedServiceId]?.name || 'N/A');
-  const servicePriceForDisplay = selectedServiceDetails ? selectedServiceDetails.price : (serviceDisplayMapping[selectedServiceId]?.price || 'N/A');
+  const serviceNameForDisplay = selectedServiceDetails?.name || 'N/A';
+  const servicePriceForDisplay = selectedServiceDetails?.price || 'N/A';
 
 
   if (isSubmitted) {
@@ -168,7 +174,7 @@ function App() {
                 Seu agendamento foi realizado com sucesso. Você receberá um e-mail de confirmação em breve.
               </p>
               <div className="bg-gray-50 p-4 rounded-lg mb-4 text-left">
-                <p><strong>Data:</strong> {new Date(selectedDate).toLocaleDateString('en-US')}</p> {/* Alterado para en-US */}
+                <p><strong>Data:</strong> {new Date(selectedDate).toLocaleDateString('en-US')}</p>
                 <p><strong>Horário:</strong> {selectedTime}</p>
                 <p><strong>Serviço:</strong> {serviceNameForDisplay} {servicePriceForDisplay}</p>
                 <p><strong>Cliente:</strong> {clientInfo.name}</p>
@@ -224,8 +230,9 @@ function App() {
                     {services.map(service => (
                       <SelectItem key={service.service_key} value={service.service_key}>
                         <div className="flex justify-between items-center w-full">
-                          <span>{serviceDisplayMapping[service.service_key]?.name || service.name}</span>
-                          <span className="text-sm text-gray-500 ml-2">{serviceDisplayMapping[service.service_key]?.price || service.price}</span>
+                          {/* ** MODIFICADO AQUI: Usando service.name e service.price diretamente ** */}
+                          <span>{service.name}</span>
+                          <span className="text-sm text-gray-500 ml-2">{service.price}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -346,7 +353,7 @@ function App() {
                 </div>
                 <div className="bg-green-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-green-900">Data</h4>
-                  <p className="text-green-700">{new Date(selectedDate).toLocaleDateString('en-US')}</p> {/* Alterado para en-US */}
+                  <p className="text-green-700">{new Date(selectedDate).toLocaleDateString('en-US')}</p>
                 </div>
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-purple-900">Horário</h4>
