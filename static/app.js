@@ -36,14 +36,28 @@ class BookingSystem {
         });
     }
 
-    setMinDate() {
-        // Set minimum date to today
+   setMinDate() {
         const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        
         const dateInput = document.getElementById('appointmentDate');
-        dateInput.min = tomorrow.toISOString().split('T')[0];
+        
+        // Define o horário de fechamento do dia (20h = 8 PM)
+        const closingHour = 20; // 20:00
+        
+        // Cria um objeto Date para o horário de fechamento de hoje
+        const closingTimeToday = new Date(today);
+        closingTimeToday.setHours(closingHour, 0, 0, 0); // Define para 20:00:00.000 de hoje
+
+        // Se o horário atual é ANTES do horário de fechamento de hoje
+        // (Ou se for exatamente o horário de fechamento, mas ainda não passou, devido à comparação de getTime())
+        if (today.getTime() < closingTimeToday.getTime()) {
+            // Permite agendar para hoje
+            dateInput.min = today.toISOString().split('T')[0];
+        } else {
+            // Se já passou do horário de fechamento de hoje, só permite a partir de amanhã
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+        }
     }
 
     async loadServices() {
