@@ -28,8 +28,25 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Não precisamos mais do serviceDisplayMapping hardcoded, pois os serviços vêm da API.
-  // const serviceDisplayMapping = { ... };
+  // --- INÍCIO DA CORREÇÃO 1: Lógica getMinDate ---
+  const getMinDate = () => {
+    const today = new Date();
+    const closingHour = 20; // 20:00
+
+    const closingTimeToday = new Date(today);
+    closingTimeToday.setHours(closingHour, 0, 0, 0);
+
+    if (today.getTime() < closingTimeToday.getTime()) {
+      // Se o horário atual é ANTES do horário de fechamento de hoje
+      return today.toISOString().split('T')[0];
+    } else {
+      // Se já passou do horário de fechamento de hoje, só permite a partir de amanhã
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().split('T')[0];
+    }
+  };
+  // --- FIM DA CORREÇÃO 1 ---
 
   // Efeito para carregar serviços da API quando o componente monta
   useEffect(() => {
@@ -129,6 +146,12 @@ function App() {
       }
 
       setIsSubmitted(true);
+      // --- INÍCIO DA CORREÇÃO 2: Integração do Meta Pixel ---
+      if (typeof window.fbq === 'function') { // Boa prática para garantir que a função fbq existe
+        window.fbq('track', 'Lead'); // Ou fbq('track', 'Schedule'); se preferir este nome
+      }
+      // --- FIM DA CORREÇÃO 2 ---
+
     } catch (err) {
       console.error('Error submitting appointment:', err);
       setError(err.message || 'An unexpected error occurred. Please try again.');
@@ -248,7 +271,7 @@ function App() {
                   id="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  min={new Date().toISOString().split('T')[0]}
+                  min={getMinDate()} // <-- USANDO A NOVA FUNÇÃO AQUI
                 />
               </div>
 
