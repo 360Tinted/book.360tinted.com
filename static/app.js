@@ -361,6 +361,12 @@ class BookingSystem {
             const result = await response.json();
             
             if (response.ok) {
+                // *** ADICIONE ESTA LINHA AQUI ***
+                // Certifique-se de que 'fbq' está disponível globalmente (o que é garantido pelo seu HTML)
+                if (typeof fbq === 'function') { // Boa prática para garantir que a função fbq existe
+                    fbq('track', 'Lead'); // Ou fbq('track', 'Schedule'); se preferir este nome
+                }
+                // ******************************
                 this.showSuccess('Appointment booked successfully! You will receive a confirmation email shortly.');
                 this.resetForm();
             } else {
