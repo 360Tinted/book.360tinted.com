@@ -4,13 +4,16 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  // REMOVA OU COMENTE a linha: root: 'static',
+  // IMPORTANTE: Esta linha 'root: 'static'' DEVE SER REMOVIDA ou COMENTADA
+  // root: 'static',
   build: {
-    outDir: 'dist', // ESSA LINHA É CRUCIAL: Faz a Vite criar a pasta 'dist'
-    emptyOutDir: true,
+    // ESSA LINHA É A CHAVE: Diz à Vite para colocar os arquivos de build diretamente na raiz
+    outDir: '.',
+    emptyOutDir: true, // Garante que a pasta de saída seja limpa
   },
   resolve: {
     alias: {
+      // O alias deve apontar para a pasta 'src' na raiz do projeto
       '@': path.resolve(__dirname, './src'),
     },
   },
