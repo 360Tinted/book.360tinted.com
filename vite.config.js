@@ -7,9 +7,9 @@ export default defineConfig({
   // IMPORTANTE: Esta linha 'root: 'static'' DEVE SER REMOVIDA ou COMENTADA
   // root: 'static',
   build: {
-    // ESSA LINHA É A CHAVE: Diz à Vite para colocar os arquivos de build diretamente na raiz
-    outDir: '.',
-    emptyOutDir: true, // Garante que a pasta de saída seja limpa
+    // ESTA É A ÚNICA LINHA 'outDir' que deve existir no bloco 'build'
+    outDir: 'dist', // Diz à Vite para colocar os arquivos de build DENTRO da pasta 'dist'
+    emptyOutDir: true, // Garante que a pasta dist seja limpa antes de cada build
   },
   resolve: {
     alias: {
