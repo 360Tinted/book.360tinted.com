@@ -1,0 +1,22 @@
+# Pastas de dependências
+/node_modules
+
+# Pastas de build
+/dist
+
+# Arquivos de log/cache do npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.pnpm-store
+
+# Ambientes
+.env
+.env.local
+.env.*.local
+
+# Outros
+.DS_Store
+Thumbs.db
+*.log
