@@ -4,11 +4,10 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  // A linha 'root: 'static'' deve estar removida ou comentada.
+  // REMOVA OU COMENTE a linha: root: 'static',
   build: {
-    // MUDEI AQUI: A Vite vai gerar os arquivos diretamente na raiz do projeto (temporariamente)
-    outDir: '.', // Isso fará com que index.html e assets/ fiquem na raiz
-    emptyOutDir: true, // Isso garantirá que a pasta seja limpa
+    outDir: 'dist', // ESSA LINHA É CRUCIAL: Faz a Vite criar a pasta 'dist'
+    emptyOutDir: true,
   },
   resolve: {
     alias: {
